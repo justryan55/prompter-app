@@ -5,7 +5,10 @@ import AuthForm from '@/components/AuthForm.vue'
 <template>
   <main class="layout">
     <p class="title">Login</p>
-    <AuthForm />
+    <AuthForm auth="login" />
+    <p class="text">
+      New to Prompter? <router-link to="/register" class="link">Sign up here.</router-link>
+    </p>
   </main>
 </template>
 
@@ -21,5 +24,20 @@ import AuthForm from '@/components/AuthForm.vue'
 .title {
   font-size: 2rem;
   color: white;
+}
+
+.text {
+  font-size: 1.2rem;
+  color: white;
+}
+
+.link {
+  text-decoration: none;
+  font-weight: 700;
+  color: #9238ec;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 </style>

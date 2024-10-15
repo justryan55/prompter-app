@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const handleClick = () => {
-  router.push('/authentication')
+  router.push('/login')
 }
 </script>
 
