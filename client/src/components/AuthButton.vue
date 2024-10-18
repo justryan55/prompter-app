@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { fetchData } from '@/services/helpers'
+import { useUserStore } from '@/stores/user'
 import { jwtDecode } from 'jwt-decode'
 import { defineProps, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -11,6 +12,7 @@ const props = defineProps<{
 
 const message = ref('')
 const router = useRouter()
+const userStore = useUserStore()
 
 const handleClick = async () => {
   try {
@@ -21,6 +23,7 @@ const handleClick = async () => {
       if (data && data.token) {
         const { userId, firstName, lastName, email, myCircle } = jwtDecode(data.token)
         localStorage.setItem('token', data.token)
+        userStore.setUser({ userId, firstName, lastName, email, myCircle })
         router.push('/home')
       } else {
         message.value = 'Login failed. Please try again.'

@@ -6,6 +6,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { isAuthenticated } from './services/auth'
 import ExplorePage from './pages/ExplorePage.vue'
 import MyCirclePage from './pages/MyCirclePage.vue'
+import AddFriendPage from './pages/AddFriendPage.vue'
 
 const routes = [
   {
@@ -45,6 +46,12 @@ const routes = [
     path: '/my-circle',
     name: 'My Circle',
     component: MyCirclePage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/my-circle/add-friend',
+    name: 'Add Friend',
+    component: AddFriendPage,
     meta: { requiresAuth: true }
   }
 ]

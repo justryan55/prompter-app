@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import { useUserStore } from '@/stores/user'
 import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
 
 const handleClick = async () => {
   localStorage.removeItem('token')
+  userStore.clearUser()
   await router.push('/login')
 }
 

@@ -1,14 +1,34 @@
 <script setup lang="ts">
 import ConnectionCard from '@/components/ConnectionCard.vue'
 import NavigationBar from '@/components/NavigationBar.vue'
+
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+
+const userStore = useUserStore()
+
+const { userId, firstName, lastName, email, myCircle } = userStore
+
+const router = useRouter()
+
+const handleClick = () => {
+  router.push('/my-circle/add-friend')
+}
+
+console.log(myCircle)
 </script>
 
 <template>
   <div class="layout">
     <div class="fixed">
       <div class="header-container">
-        <p class="header">Ryan's Circle</p>
-        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+        <p class="header">{{ firstName }}'s Circle</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="ionicon"
+          viewBox="0 0 512 512"
+          @click="handleClick"
+        >
           <path
             d="M376 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"
             fill="none"
@@ -43,12 +63,16 @@ import NavigationBar from '@/components/NavigationBar.vue'
         <p class="filter">Friends</p>
       </div>
     </div>
-    <div class="card-layout">
-      <!-- <div class="card-container"> -->
-      <ConnectionCard />
 
-      <!-- </div> -->
+    <div v-if="myCircle.length > 0" class="card-layout">
+      <ConnectionCard
+        v-for="(connection, index) in myCircle"
+        :key="index"
+        :connection="connection"
+      />
     </div>
+    <div v-else class="no-connections-text">You do not have any connections in your circle.</div>
+
     <NavigationBar />
   </div>
 </template>
@@ -79,6 +103,11 @@ import NavigationBar from '@/components/NavigationBar.vue'
 
 .header-container > svg {
   height: 24px;
+}
+
+.header-container > svg:hover {
+  color: #9238ec;
+  cursor: pointer;
 }
 
 .filters {
@@ -141,4 +170,10 @@ import NavigationBar from '@/components/NavigationBar.vue'
   align-items: center;
   color: white;
 } */
+
+.no-connections-text {
+  padding: 20px;
+  font-size: 1rem;
+  color: white;
+}
 </style>

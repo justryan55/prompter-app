@@ -1,3 +1,5 @@
+import { useUserStore } from '@/stores/user'
+
 export const fetchData = async (url, method, payload) => {
   try {
     const params = {
@@ -16,3 +18,10 @@ export const fetchData = async (url, method, payload) => {
     console.log('Error fetching data:', err)
   }
 }
+
+// export const fetchCurrentUser = () => {
+//   const userStore = useUserStore()
+//   const { userId, firstName, lastName, email, myCircle } = userStore
+
+//   return { userId, firstName, lastName, email, myCircle }
+// }
