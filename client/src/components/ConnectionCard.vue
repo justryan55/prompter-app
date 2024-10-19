@@ -27,16 +27,15 @@ watch(
 )
 
 const handleClick = async () => {
-  const searchedConnected = props.connectionConnected
   try {
     const userIdToModify = props.connectionUserId
     const endpoint = `${userId}/${userIdToModify}/${isConnected.value ? 'remove-connection' : 'add-connection'}`
     const res = await fetchData(endpoint, 'POST')
-    const data = await res?.json()
-    isConnected.value = !isConnected.value
-    console.log(data)
 
-    emit('update-connection', { userId: userIdToModify, connected: isConnected.value })
+    if (res.ok) {
+      isConnected.value = !isConnected.value
+      emit('update-connection', { userId: userIdToModify, connected: isConnected.value })
+    }
   } catch (err) {
     console.log(err)
   }
