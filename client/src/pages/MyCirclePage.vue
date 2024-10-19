@@ -1,21 +1,48 @@
-<script setup lang="ts">
+<script lang="ts">
 import ConnectionCard from '@/components/ConnectionCard.vue'
 import NavigationBar from '@/components/NavigationBar.vue'
-
+import { fetchCurrentUser, fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
-import { useRouter } from 'vue-router'
+import { defineComponent } from 'vue'
 
-const userStore = useUserStore()
+export default defineComponent({
+  name: 'MyCirclePage',
+  components: {
+    ConnectionCard,
+    NavigationBar
+  },
 
-const { userId, firstName, lastName, email, myCircle } = userStore
+  data() {
+    const userStore = useUserStore()
+    return {
+      userId: userStore.userId,
+      firstName: userStore.firstName,
+      lastName: userStore.lastName,
+      email: userStore.email,
+      myCircle: userStore.myCircle
+    }
+  },
 
-const router = useRouter()
+  methods: {
+    handleClick() {
+      this.$router.push('/my-circle/add-friend')
+    },
 
-const handleClick = () => {
-  router.push('/my-circle/add-friend')
-}
+    fetchCurrentUser() {
+      fetchCurrentUser()
+        .then(() => {
+          console.log('User data fetched and store updated.')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
 
-console.log(myCircle)
+  mounted() {
+    this.fetchCurrentUser()
+  }
+})
 </script>
 
 <template>
@@ -64,11 +91,13 @@ console.log(myCircle)
       </div>
     </div>
 
-    <div v-if="myCircle.length > 0" class="card-layout">
+    <div v-if="myCircle && Object.values(myCircle).length > 0" class="card-layout">
       <ConnectionCard
         v-for="(connection, index) in myCircle"
         :key="index"
         :connection="connection"
+        :connectionFirstName="connection.firstName"
+        :connectionLastName="connection.lastName"
       />
     </div>
     <div v-else class="no-connections-text">You do not have any connections in your circle.</div>
