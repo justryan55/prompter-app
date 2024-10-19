@@ -115,12 +115,10 @@ router.post(`/:userId/:userIdToRemove/remove-connection`, async (req, res) => {
       })
     }
 
-    if (user) {
-      return res.status(200).json({
-        success: true,
-        message: 'Removed connection'
-      })
-    }
+    return res.status(200).json({
+      success: true,
+      message: 'Removed connection'
+    })
   } catch (err) {
     console.log(err)
     return res.status(500).json({
