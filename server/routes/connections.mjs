@@ -56,9 +56,23 @@ router.get('/:userId/search', async (req, res) => {
 router.post(`/:userId/:userIdToAdd/add-connection`, async (req, res) => {
   try {
     const { userId, userIdToAdd } = req.params
+    const userToAdd = await userModel.findOne({ _id: userIdToAdd })
+
+    if (!userToAdd) {
+      return res.status(404).json({ message: 'User to add not found' })
+    }
+
     const user = await userModel.findOneAndUpdate(
       { _id: userId },
-      { $addToSet: { myCircle: userIdToAdd } },
+      {
+        $addToSet: {
+          myCircle: {
+            id: userIdToAdd,
+            firstName: userToAdd.firstName,
+            lastName: userToAdd.lastName
+          }
+        }
+      },
       { new: true }
     )
 
@@ -87,6 +101,7 @@ router.post(`/:userId/:userIdToAdd/add-connection`, async (req, res) => {
 router.post(`/:userId/:userIdToRemove/remove-connection`, async (req, res) => {
   try {
     const { userId, userIdToRemove } = req.params
+
     const user = await userModel.findOneAndUpdate(
       { _id: userId },
       { $pull: { myCircle: userIdToRemove } },
