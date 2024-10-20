@@ -53,78 +53,59 @@ router.get('/:userId/search', async (req, res) => {
   }
 })
 
-router.post(`/:userId/:userIdToAdd/add-connection`, async (req, res) => {
+router.post(`/:userId/:connectionUserId/toggle-connection`, async (req, res) => {
   try {
-    const { userId, userIdToAdd } = req.params
-    const userToAdd = await userModel.findOne({ _id: userIdToAdd })
+    const { userId, connectionUserId } = req.params
 
-    if (!userToAdd) {
-      return res.status(404).json({ message: 'User to add not found' })
-    }
+    const currentUser = await userModel.findById(userId)
+    const connection = await userModel.findById(connectionUserId)
 
-    const user = await userModel.findOneAndUpdate(
-      { _id: userId },
-      {
-        $addToSet: {
-          myCircle: {
-            id: userIdToAdd,
-            firstName: userToAdd.firstName,
-            lastName: userToAdd.lastName
-          }
-        }
-      },
-      { new: true }
-    )
-
-    if (!user) {
+    if (!currentUser || !connection) {
       return res.status(404).json({
-        success: false,
-        message: 'There are no users associated with that email address.'
+        success: true,
+        message: 'User or connection not found'
       })
     }
 
-    if (user) {
+    const isConnected = currentUser.myCircle.some((user) => user.id === connectionUserId)
+
+    if (isConnected) {
+      const updateCurrentUser = await userModel.findOneAndUpdate(
+        {
+          _id: userId
+        },
+        { $pull: { myCircle: { id: connectionUserId } } },
+        { new: true }
+      )
       return res.status(200).json({
         success: true,
-        message: 'Added new connection'
+        message: 'Removed connection'
+      })
+    }
+
+    if (!isConnected) {
+      const updateCurrentUser = await userModel.findOneAndUpdate(
+        {
+          _id: userId
+        },
+        {
+          $addToSet: {
+            myCircle: {
+              id: connectionUserId,
+              firstName: connection.firstName,
+              lastName: connection.lastName
+            }
+          }
+        },
+        { new: true }
+      )
+      return res.status(200).json({
+        success: true,
+        message: 'Added connection'
       })
     }
   } catch (err) {
     console.log(err)
-    return res.status(500).json({
-      success: false,
-      message: 'An error occurred on the server'
-    })
-  }
-})
-
-router.post(`/:userId/:userIdToRemove/remove-connection`, async (req, res) => {
-  try {
-    const { userId, userIdToRemove } = req.params
-
-    const user = await userModel.findOneAndUpdate(
-      { _id: userId },
-      { $pull: { myCircle: userIdToRemove } },
-      { new: true }
-    )
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'There are no users associated with that email address.'
-      })
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Removed connection'
-    })
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      success: false,
-      message: 'An error occurred on the server'
-    })
   }
 })
 
