@@ -12,14 +12,37 @@ export default defineComponent({
     NavigationBar
   },
 
-  data() {
-    const userStore = useUserStore()
-    return {
-      userId: userStore.userId,
-      firstName: userStore.firstName,
-      lastName: userStore.lastName,
-      email: userStore.email,
-      myCircle: userStore.myCircle
+  // data() {
+  //   const userStore = useUserStore()
+  //   return {
+  //     userId: userStore.userId,
+  //     firstName: userStore.firstName,
+  //     lastName: userStore.lastName,
+  //     email: userStore.email,
+  //     myCircle: userStore.myCircle
+  //   }
+  // },
+
+  computed: {
+    userId() {
+      const userStore = useUserStore()
+      return userStore.userId
+    },
+    firstName() {
+      const userStore = useUserStore()
+      return userStore.firstName
+    },
+    lastName() {
+      const userStore = useUserStore()
+      return userStore.lastName
+    },
+    email() {
+      const userStore = useUserStore()
+      return userStore.email
+    },
+    myCircle() {
+      const userStore = useUserStore()
+      return userStore.myCircle
     }
   },
 
@@ -98,6 +121,7 @@ export default defineComponent({
         :connection="connection"
         :connectionFirstName="connection.firstName"
         :connectionLastName="connection.lastName"
+        :connectionConnected="connection.connected"
       />
     </div>
     <div v-else class="no-connections-text">You do not have any connections in your circle.</div>
