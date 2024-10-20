@@ -1,45 +1,47 @@
-<script setup lang="ts">
+<script lang="ts">
 import { fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
-import { ref, watch } from 'vue'
+import { defineComponent } from 'vue'
 
-const props = defineProps({
-  connectionFirstName: String,
-  connectionLastName: String,
-  connectionEmail: String,
-  connectionUserId: String,
-  connectionConnected: Boolean
-})
+export default defineComponent({
+  props: {
+    connectionFirstName: String,
+    connectionLastName: String,
+    connectionEmail: String,
+    connectionUserId: String,
+    connectionConnected: Boolean
+  },
 
-const emit = defineEmits<{
-  (e: 'update-connection', payload: { userId: string; connected: boolean }): void
-}>()
-
-const userStore = useUserStore()
-const { userId, firstName, lastName, email, myCircle } = userStore
-const isConnected = ref(props.connectionConnected)
-
-watch(
-  () => props.connectionConnected,
-  (newValue) => {
-    isConnected.value = newValue
-  }
-)
-
-const handleClick = async () => {
-  try {
-    const userIdToModify = props.connectionUserId
-    const endpoint = `${userId}/${userIdToModify}/${isConnected.value ? 'remove-connection' : 'add-connection'}`
-    const res = await fetchData(endpoint, 'POST')
-
-    if (res.ok) {
-      isConnected.value = !isConnected.value
-      emit('update-connection', { userId: userIdToModify, connected: isConnected.value })
+  data() {
+    return {
+      isConnected: this.connectConnected
     }
-  } catch (err) {
-    console.log(err)
+  },
+
+  watch: {
+    connectionConnected(newValue) {
+      this.isConnected = newValue
+    }
+  },
+
+  methods: {
+    async handleClick() {
+      try {
+        const userStore = useUserStore()
+        const { userId } = userStore
+        const connectionUserId = this.connectionUserId
+        const endpoint = `${userId}/${connectionUserId}/toggle-connection`
+        const res = await fetchData(endpoint, 'POST')
+
+        if (res.ok) {
+          this.isConnected = !this.isConnected
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
-}
+})
 </script>
 
 <template>
@@ -62,7 +64,7 @@ const handleClick = async () => {
     <div>
       <p class="name">{{ connectionFirstName }} {{ connectionLastName }}</p>
     </div>
-    <p class="button" @click="handleClick">{{ connectionConnected ? 'Connected' : 'Connect' }}</p>
+    <p class="button" @click="handleClick">{{ isConnected ? 'Connected' : 'Connect' }}</p>
   </div>
 </template>
 
