@@ -12,17 +12,6 @@ export default defineComponent({
     NavigationBar
   },
 
-  // data() {
-  //   const userStore = useUserStore()
-  //   return {
-  //     userId: userStore.userId,
-  //     firstName: userStore.firstName,
-  //     lastName: userStore.lastName,
-  //     email: userStore.email,
-  //     myCircle: userStore.myCircle
-  //   }
-  // },
-
   computed: {
     userId() {
       const userStore = useUserStore()
