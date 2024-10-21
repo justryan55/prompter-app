@@ -8,7 +8,8 @@ router.get('/:userId/search', async (req, res) => {
     const searchValue = req.query.query
     const userId = req.params.userId
 
-    const user = await userModel.findOne({ email: searchValue })
+    const user = await userModel.findById(userId)
+    const connection = await userModel.findOne({ email: searchValue })
 
     if (!user) {
       return res.status(404).json({
@@ -18,27 +19,27 @@ router.get('/:userId/search', async (req, res) => {
     }
 
     if (user) {
-      if (user.myCircle.includes(userId)) {
+      if (user.myCircle.some((person) => person.id === connection.id)) {
         return res.status(200).json({
           success: true,
           message: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            userId: user.id,
+            firstName: connection.firstName,
+            lastName: connection.lastName,
+            email: connection.email,
+            userId: connection.id,
             connected: true
           }
         })
       }
 
-      if (!user.myCircle.includes(userId)) {
+      if (!user.myCircle.some((person) => person.id === connection.id)) {
         return res.status(200).json({
           success: true,
           message: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            userId: user.id,
+            firstName: connection.firstName,
+            lastName: connection.lastName,
+            email: connection.email,
+            userId: connection.id,
             connected: false
           }
         })
@@ -70,7 +71,7 @@ router.post(`/:userId/:connectionUserId/toggle-connection`, async (req, res) => 
     const isConnected = currentUser.myCircle.some((user) => user.id === connectionUserId)
 
     if (isConnected) {
-      const updateCurrentUser = await userModel.findOneAndUpdate(
+      await userModel.findOneAndUpdate(
         {
           _id: userId
         },
@@ -84,7 +85,7 @@ router.post(`/:userId/:connectionUserId/toggle-connection`, async (req, res) => 
     }
 
     if (!isConnected) {
-      const updateCurrentUser = await userModel.findOneAndUpdate(
+      await userModel.findOneAndUpdate(
         {
           _id: userId
         },
@@ -93,7 +94,8 @@ router.post(`/:userId/:connectionUserId/toggle-connection`, async (req, res) => 
             myCircle: {
               id: connectionUserId,
               firstName: connection.firstName,
-              lastName: connection.lastName
+              lastName: connection.lastName,
+              connnected: true
             }
           }
         },
