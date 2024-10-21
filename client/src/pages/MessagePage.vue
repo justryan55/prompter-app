@@ -43,6 +43,21 @@ import NavigationBar from '@/components/NavigationBar.vue'
         </svg> -->
       </div>
     </div>
+    <div class="prompt-container" @click="handleClick">
+      <div class="prompt-labels">
+        <p class="connection-label">Tim Harris</p>
+        <p class="prompt-question">What is your favourite memory with Ryan Irani?</p>
+      </div>
+    </div>
+
+    <div class="prompt-container" @click="handleClick">
+      <div class="prompt-labels">
+        <p class="connection-label">Sarah Cant</p>
+        <p class="prompt-question">
+          What is the first thing that comes to mind when you think of Ryan Irani?
+        </p>
+      </div>
+    </div>
 
     <NavigationBar />
   </div>
@@ -70,5 +85,47 @@ import NavigationBar from '@/components/NavigationBar.vue'
   font-size: 2rem;
   font-weight: 700;
   /* border-bottom: 1px white solid; */
+}
+
+.prompt-container {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  background-color: #f8f9fa;
+  border: 1px white solid;
+  width: 90vw;
+  height: auto;
+  border-radius: 15px;
+  margin: 3px;
+}
+
+.prompt-labels {
+  display: grid;
+  grid-template-columns: 1.5fr 3fr;
+  /* justify-content: space-between; */
+  border-bottom: 1px rgb(0, 0, 0, 0.5) solid;
+}
+
+.prompt-question {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  grid-column: 2;
+  grid-row: 1;
+  margin: 10px;
+}
+
+.connection-label {
+  font-weight: 500;
+  padding: 10px;
+  margin-left: 5px;
+  border: 1px black solid;
+  border-radius: 15px;
+  background-color: #9238ec;
+  color: white;
+  text-align: center;
+  grid-column: 1;
+  grid-row: 1;
 }
 </style>
