@@ -8,6 +8,7 @@ import ExplorePage from './pages/ExplorePage.vue'
 import MyCirclePage from './pages/MyCirclePage.vue'
 import ExpandConnectionsPage from './pages/ExpandConnectionsPage.vue'
 import PromptPage from './pages/PromptPage.vue'
+import MessagePage from './pages/MessagePage.vue'
 
 const routes = [
   {
@@ -43,12 +44,12 @@ const routes = [
     component: ExplorePage,
     meta: { requiresAuth: true }
   },
-  // {
-  //   path: '/home',
-  //   name: 'Home',
-  //   component: HomePage,
-  //   meta: { requiresAuth: true }
-  // },
+  {
+    path: '/messages',
+    name: 'Messages',
+    component: MessagePage,
+    meta: { requiresAuth: true }
+  },
   {
     path: '/my-circle',
     name: 'My Circle',
