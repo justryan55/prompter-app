@@ -78,7 +78,7 @@ export default defineComponent({
         try {
           const res = await fetchData(`${this.userId}/search?query=${searchValue}`, 'GET', '')
           const data = await res?.json()
-
+          console.log(data)
           if (data.message) {
             this.searchedUser = {
               connectionFirstName: data.message.firstName,
@@ -97,12 +97,6 @@ export default defineComponent({
     }
   }
 })
-
-// const handleUpdateConnection = ({ userId, connected }) => {
-//   if (searchedUser.value.connectionUserId === userId) {
-//     searchedUser.value.connectionConnected = connected
-//   }
-// }
 </script>
 
 <template>
