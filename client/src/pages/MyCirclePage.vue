@@ -108,6 +108,7 @@ export default defineComponent({
         v-for="(connection, index) in myCircle"
         :key="index"
         :connection="connection"
+        :connectionUserId="connection.id"
         :connectionFirstName="connection.firstName"
         :connectionLastName="connection.lastName"
         :connectionConnected="connection.connected"
