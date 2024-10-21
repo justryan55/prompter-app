@@ -23,7 +23,7 @@ export default defineComponent({
 
     <div class="prompt-container">
       <div class="prompt-header-container">
-        <p class="prompt-header">Prompt</p>
+        <!-- <p class="prompt-header">Prompt</p> -->
         <p class="close-prompt" @click="handleCloseClick">X</p>
       </div>
       <p class="prompt-text">What is your favourite memory with Ryan Irani?</p>
@@ -31,7 +31,7 @@ export default defineComponent({
     <!-- <NavigationBar /> -->
 
     <div class="input-container">
-      <input type="text" class="input" />
+      <input type="text" class="input" placeholder="Respond to the prompt" />
     </div>
   </div>
 </template>
@@ -77,7 +77,7 @@ export default defineComponent({
 
 .prompt-header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .prompt-header {
@@ -109,5 +109,16 @@ export default defineComponent({
   width: 80vw;
   padding: 20px;
   border-radius: 15px;
+  outline: none;
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border: 1.5px #9238ec solid;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
 }
 </style>
