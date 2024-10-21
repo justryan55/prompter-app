@@ -7,6 +7,7 @@ import { isAuthenticated } from './services/auth'
 import ExplorePage from './pages/ExplorePage.vue'
 import MyCirclePage from './pages/MyCirclePage.vue'
 import ExpandConnectionsPage from './pages/ExpandConnectionsPage.vue'
+import PromptPage from './pages/PromptPage.vue'
 
 const routes = [
   {
@@ -28,6 +29,12 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: HomePage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/home/prompt',
+    name: 'Prompt',
+    component: PromptPage,
     meta: { requiresAuth: true }
   },
   {
