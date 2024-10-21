@@ -12,34 +12,54 @@ export default defineComponent({
     connectionConnected: Boolean
   },
 
-  data() {
-    return {
-      isConnected: this.connectConnected
-    }
-  },
-
-  watch: {
-    connectionConnected(newValue) {
-      this.isConnected = newValue
+  computed: {
+    userId() {
+      const userStore = useUserStore()
+      return userStore.userId
+    },
+    myCircle() {
+      const userStore = useUserStore()
+      return userStore.myCircle
+    },
+    mappedCircle() {
+      return this.myCircle.map((user) => ({
+        firstName: user.firstName,
+        lastName: user.firstName,
+        id: user.id
+      }))
+    },
+    isConnected() {
+      return this.connectionConnected
     }
   },
 
   methods: {
     async handleClick() {
       try {
-        const userStore = useUserStore()
-        const { userId } = userStore
-        const connectionUserId = this.connectionUserId
-        const endpoint = `${userId}/${connectionUserId}/toggle-connection`
+        const endpoint = `${this.userId}/${this.connectionUserId}/toggle-connection`
         const res = await fetchData(endpoint, 'POST')
-
+        const data = await res?.json()
+        console.log(data)
         if (res.ok) {
-          this.isConnected = !this.isConnected
+          // this.isConnected = !this.isConnected
         }
       } catch (err) {
         console.log(err)
       }
+    },
+
+    async checkConnection() {
+      try {
+        const connectionExists = this.mappedCircle.some((user) => user.id === this.connectionUserId)
+        return connectionExists ? this.isConnected : false
+      } catch (err) {
+        console.log(err)
+      }
     }
+  },
+
+  mounted() {
+    this.checkConnection()
   }
 })
 </script>
