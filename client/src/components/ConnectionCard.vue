@@ -96,6 +96,7 @@ export default defineComponent({
   color: black;
   background-color: white;
   border-bottom: 1px black solid;
+  border-radius: 5px;
 }
 
 svg {

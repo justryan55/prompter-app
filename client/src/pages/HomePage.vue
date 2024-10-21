@@ -35,7 +35,10 @@ export default defineComponent({
       <div></div>
     </div>
     <div class="prompt-container" @click="handleClick">
-      <p class="prompt-header">Prompt</p>
+      <div class="prompt-labels">
+        <p class="prompt-label">Prompt</p>
+        <p class="connection-label">Ryan Irani</p>
+      </div>
       <p class="prompt-text">What is your favourite memory with Ryan Irani?</p>
     </div>
     <NavigationBar />
@@ -88,13 +91,29 @@ export default defineComponent({
   border-radius: 15px;
 }
 
-.prompt-header {
+.prompt-labels {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px rgb(0, 0, 0, 0.5) solid;
+}
+.prompt-label {
   font-weight: 500;
   padding: 10px;
   margin-left: 10px;
   width: fit-content;
   border: 1px black solid;
   border-radius: 15px;
+}
+
+.connection-label {
+  font-weight: 500;
+  padding: 10px;
+  margin-right: 10px;
+  width: fit-content;
+  border: 1px black solid;
+  border-radius: 15px;
+  background-color: #9238ec;
+  color: white;
 }
 
 .prompt-text {
