@@ -37,7 +37,8 @@ export const fetchCurrentUser = () => {
         firstName: data.message.firstName,
         lastName: data.message.lastName,
         email: data.message.email,
-        myCircle: data.message.myCircle
+        myCircle: data.message.myCircle,
+        messages: data.message.messages
       })
     )
 }

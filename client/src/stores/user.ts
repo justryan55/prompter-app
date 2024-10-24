@@ -6,7 +6,8 @@ export const useUserStore = defineStore('user', {
     firstName: '',
     lastName: '',
     email: '',
-    myCircle: {}
+    myCircle: {},
+    messages: []
   }),
 
   actions: {
@@ -16,6 +17,7 @@ export const useUserStore = defineStore('user', {
       this.lastName = user.lastName
       this.email = user.email
       this.myCircle = user.myCircle
+      this.messages = user.messages
     },
 
     clearUser(user) {
