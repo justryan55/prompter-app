@@ -95,6 +95,7 @@ router.post(`/:userId/:connectionUserId/toggle-connection`, async (req, res) => 
               id: connectionUserId,
               firstName: connection.firstName,
               lastName: connection.lastName,
+              messages: {},
               connnected: true
             }
           }

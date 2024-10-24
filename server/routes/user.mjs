@@ -22,7 +22,8 @@ router.get('/getCurrentUser/:userId', async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        myCircle: user.myCircle
+        myCircle: user.myCircle,
+        messages: user.messages
       }
     })
   } catch (err) {
