@@ -8,6 +8,7 @@ import ExplorePage from './pages/ExplorePage.vue'
 import MyCirclePage from './pages/MyCirclePage.vue'
 import ExpandConnectionsPage from './pages/ExpandConnectionsPage.vue'
 import PromptPage from './pages/PromptPage.vue'
+import MessageListPage from './pages/MessageListPage.vue'
 import MessagePage from './pages/MessagePage.vue'
 
 const routes = [
@@ -46,6 +47,12 @@ const routes = [
   },
   {
     path: '/messages',
+    name: 'MessageList',
+    component: MessageListPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/messages/:messageId',
     name: 'Messages',
     component: MessagePage,
     meta: { requiresAuth: true }
