@@ -34,10 +34,10 @@ export default defineComponent({
       <div></div>
       <div></div>
     </div>
-    <div class="prompt-container" @click="handleClick">
-      <div class="prompt-labels">
+    <div class="message-container" @click="handleClick">
+      <div class="message-details">
         <p class="prompt-label">Prompt</p>
-        <p class="connection-label">Ryan Irani</p>
+        <p class="sender">Ryan Irani</p>
       </div>
       <p class="prompt-text">What is your favourite memory with Ryan Irani?</p>
     </div>
@@ -80,7 +80,7 @@ export default defineComponent({
   font-size: 1.75rem;
 }
 
-.prompt-container {
+.message-container {
   display: flex;
   flex-direction: column;
   color: black;
@@ -91,7 +91,7 @@ export default defineComponent({
   border-radius: 15px;
 }
 
-.prompt-labels {
+.message-details {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px rgb(0, 0, 0, 0.5) solid;
@@ -105,7 +105,7 @@ export default defineComponent({
   border-radius: 15px;
 }
 
-.connection-label {
+.sender {
   font-weight: 500;
   padding: 10px;
   margin-right: 10px;
