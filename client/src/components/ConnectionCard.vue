@@ -111,6 +111,8 @@ svg {
   /* background-color: #9238ec; */
   font-weight: 600;
   text-align: center;
+  background-color: #9238ec;
+  color: white;
 }
 
 .button:hover {
