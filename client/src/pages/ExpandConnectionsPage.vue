@@ -4,6 +4,7 @@ import NavigationBar from '@/components/NavigationBar.vue'
 import { fetchData } from '@/services/helpers'
 
 import { useUserStore } from '@/stores/user'
+import { mapState } from 'pinia'
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -28,26 +29,7 @@ export default defineComponent({
   },
 
   computed: {
-    userId() {
-      const userStore = useUserStore()
-      return userStore.userId
-    },
-    firstName() {
-      const userStore = useUserStore()
-      return userStore.firstName
-    },
-    lastName() {
-      const userStore = useUserStore()
-      return userStore.lastName
-    },
-    email() {
-      const userStore = useUserStore()
-      return userStore.email
-    },
-    myCircle() {
-      const userStore = useUserStore()
-      return userStore.myCircle
-    }
+    ...mapState(useUserStore, ['userId', 'firstName', 'lastName', 'email', 'myCircle', 'messages'])
   },
 
   methods: {
