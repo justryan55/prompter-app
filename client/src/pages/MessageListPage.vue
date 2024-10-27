@@ -2,9 +2,10 @@
 import NavigationBar from '@/components/NavigationBar.vue'
 import MessageCard from '@/components/MessageCard.vue'
 
-import { fetchCurrentUser, fetchData } from '@/services/helpers'
+// import { fetchCurrentUser, fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
 import { defineComponent } from 'vue'
+import { mapActions, mapState } from 'pinia'
 
 export default defineComponent({
   name: 'MessageListPage',
@@ -14,43 +15,15 @@ export default defineComponent({
   },
 
   computed: {
-    userId() {
-      const userStore = useUserStore()
-      return userStore.userId
-    },
-    messages() {
-      const userStore = useUserStore()
-      return userStore.messages
-    }
+    ...mapState(useUserStore, ['userId', 'messages'])
   },
 
   methods: {
-    // async fetchMessages() {
-    //   try {
-    //     const res = await fetchData(`${this.userId}/fetchMessages`, 'GET')
-    //     const data = await res?.json()
-
-    //     console.log(data.message)
-    //   } catch (err) {
-    //     console.log(err)
-    //   }
-    // },
-
-    fetchCurrentUser() {
-      fetchCurrentUser()
-        .then(() => {
-          console.log('User data fetched and store updated.')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
+    ...mapActions(useUserStore, ['fetchCurrentUser'])
   },
 
   mounted() {
-    // this.fetchMessages()
     this.fetchCurrentUser()
-    console.log(this.messages)
   }
 })
 </script>

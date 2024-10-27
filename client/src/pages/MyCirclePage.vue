@@ -22,15 +22,7 @@ export default defineComponent({
       this.$router.push('/my-circle/add-friend')
     },
 
-    fetchCurrentUser() {
-      fetchCurrentUser()
-        .then(() => {
-          console.log('User data fetched and store updated.')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
+    ...mapActions(useUserStore, ['fetchCurrentUser'])
   },
 
   mounted() {
