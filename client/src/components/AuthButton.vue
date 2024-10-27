@@ -1,52 +1,81 @@
-<script setup lang="ts">
+<script lang="ts">
 import { fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
 import { jwtDecode } from 'jwt-decode'
-import { defineProps, ref } from 'vue'
+import { defineComponent, defineProps, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const props = defineProps<{
-  label: string
-  payload: { email: string; password: string }
-}>()
+export default defineComponent({
+  name: 'AuthButton',
 
-const message = ref('')
-const router = useRouter()
-const userStore = useUserStore()
+  props: {
+    label: {
+      type: String,
+      required: true
+    },
+    payload: {
+      type: Object,
+      required: true
+    }
+  },
 
-const handleClick = async () => {
-  try {
-    if (props.label === 'Login') {
-      const res = await fetchData('auth/login', 'POST', props.payload)
-      const data = await res?.json()
+  data() {
+    return {
+      message: ''
+    }
+  },
 
-      if (data && data.token) {
-        const { userId, firstName, lastName, email, myCircle } = jwtDecode(data.token)
-        localStorage.setItem('token', data.token)
-        userStore.setUser({ userId, firstName, lastName, email, myCircle })
-        router.push('/home')
-      } else {
-        message.value = 'Login failed. Please try again.'
+  setup() {
+    const router = useRouter()
+    const userStore = useUserStore()
+    return { router, userStore }
+  },
+
+  methods: {
+    async handleClick() {
+      try {
+        if (this.label === 'Login') {
+          const res = await fetchData('auth/login', 'POST', this.payload)
+          const data = await res?.json()
+
+          if (data && data.token) {
+            const { userId, firstName, lastName, email, myCircle } = jwtDecode(data.token)
+            localStorage.setItem('token', data.token)
+            this.userStore.setUser({ userId, firstName, lastName, email, myCircle })
+            this.router.push('/home')
+          } else {
+            this.message = data.message
+          }
+        }
+
+        if (this.label === 'Register') {
+          const res = await fetchData('auth/register', 'POST', this.payload)
+          const data = await res?.json()
+          if (data && data.message) {
+            this.message = data.message
+          }
+
+          if (data && data.message === 'User created') {
+            this.router.push('/login')
+          } else {
+            this.message = data.message
+          }
+        }
+      } catch (err) {
+        this.message = 'An error occurred. Please try again.'
       }
     }
-
-    if (props.label === 'Register') {
-      const res = await fetchData('auth/register', 'POST', props.payload)
-      const data = await res?.json()
-      if (data && data.message) {
-        message.value = data.message
-      }
-
-      if (data && data.message === 'User created') {
-        router.push('/login')
-      } else {
-        message.value = 'Registration failed. Please try again.'
-      }
-    }
-  } catch (err) {
-    message.value = 'An error occurred. Please try again.'
   }
-}
+})
+
+// const props = defineProps<{
+//   label: string
+//   payload: { email: string; password: string }
+// }>()
+
+// const message = ref('')
+// const router = useRouter()
+// const userStore = useUserStore()
 </script>
 
 <template>
