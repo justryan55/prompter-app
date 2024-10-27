@@ -26,19 +26,19 @@ export const fetchData = async (url, method, payload) => {
 //   return { userId, firstName, lastName, email, myCircle }
 // }
 
-export const fetchCurrentUser = () => {
-  const userStore = useUserStore()
-  const userId = userStore.userId
-  return fetchData(`getCurrentUser/${userId}`, 'GET')
-    .then((res) => res?.json())
-    .then((data) =>
-      userStore.setUser({
-        userId: data.message.userId,
-        firstName: data.message.firstName,
-        lastName: data.message.lastName,
-        email: data.message.email,
-        myCircle: data.message.myCircle,
-        messages: data.message.messages
-      })
-    )
-}
+// export const fetchCurrentUser = () => {
+//   const userStore = useUserStore()
+//   const userId = userStore.userId
+//   return fetchData(`getCurrentUser/${userId}`, 'GET')
+//     .then((res) => res?.json())
+//     .then((data) =>
+//       userStore.setUser({
+//         userId: data.message.userId,
+//         firstName: data.message.firstName,
+//         lastName: data.message.lastName,
+//         email: data.message.email,
+//         myCircle: data.message.myCircle,
+//         messages: data.message.messages
+//       })
+//     )
+// }
