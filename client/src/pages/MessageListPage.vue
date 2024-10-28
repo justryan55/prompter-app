@@ -39,7 +39,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-if="messages">
+    <div v-if="messages && Object.values(messages).length > 0">
       <MessageCard
         v-for="(message, id) in messages"
         :key="message._id"
@@ -50,6 +50,7 @@ export default defineComponent({
         :prompt="message.prompt"
       />
     </div>
+    <p v-else class="no-messages-text">You do not have any connections in your circle.</p>
     <NavigationBar />
   </div>
 </template>
@@ -76,5 +77,11 @@ export default defineComponent({
   font-size: 2rem;
   font-weight: 700;
   /* border-bottom: 1px white solid; */
+}
+
+.no-messages-text {
+  padding: 20px;
+  font-size: 1rem;
+  color: white;
 }
 </style>

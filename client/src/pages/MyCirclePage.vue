@@ -88,7 +88,7 @@ export default defineComponent({
         :connectionConnected="connection.connected"
       />
     </div>
-    <div v-else class="no-connections-text">You do not have any connections in your circle.</div>
+    <p v-else class="no-connections-text">You do not have any connections in your circle.</p>
 
     <NavigationBar />
   </div>
