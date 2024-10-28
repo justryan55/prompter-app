@@ -9,7 +9,8 @@ export const useUserStore = defineStore({
     lastName: '',
     email: '',
     myCircle: {},
-    messages: []
+    messages: [],
+    dailyPromptMessageId: ''
   }),
 
   actions: {
@@ -53,6 +54,10 @@ export const useUserStore = defineStore({
       } catch (err) {
         console.log('Fetch failed', err)
       }
+    },
+
+    setdailyPromptMessageId(messageId) {
+      this.dailyPromptMessageId = messageId
     }
   },
   persist: {
