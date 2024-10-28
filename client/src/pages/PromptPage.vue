@@ -10,7 +10,9 @@ export default defineComponent({
 
   data() {
     return {
-      promptMessage: 'What is your favourite memory with Ryan Irani?'
+      promptMessage: '',
+      recipient: '',
+      recipientId: ''
     }
   },
 
@@ -25,15 +27,22 @@ export default defineComponent({
 
     async handleSubmit(e) {
       if (e.key === 'Enter') {
-        const connectionId = '111'
+        const connectionId = this.recipientId
+
         const payload = {
           sender: { userId: this.userId, firstName: this.firstName, lastName: this.lastName },
           prompt: this.promptMessage,
           message: e.target.value
         }
-        await fetchData(`${this.userId}/${connectionId}/new-prompt`, 'POST', payload)
+        await fetchData(`${this.userId}/${connectionId}/new-message`, 'POST', payload)
       }
     }
+  },
+
+  mounted() {
+    this.promptMessage = this.$route.query.message
+    this.recipient = this.$route.query.recipient
+    this.recipientId = this.$route.query.recipientId
   }
 })
 </script>
@@ -53,8 +62,22 @@ export default defineComponent({
       </div>
       <p class="prompt-text">{{ promptMessage }}</p>
     </div>
-    <!-- <NavigationBar /> -->
 
+    <div class="outgoing-message-container">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div class="outgoing-message">Here</div>
+    </div>
+
+    <div class="incoming-message-container">
+      <div class="incoming-message">Here</div>
+
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <!-- <NavigationBar /> -->
     <div class="input-container">
       <input
         type="text"
@@ -149,6 +172,37 @@ export default defineComponent({
   outline: none;
   border: 1.5px #9238ec solid;
   background-color: #fff;
+  box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
+}
+
+.outgoing-message-container {
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 20px;
+}
+
+.outgoing-message {
+  color: white;
+  background-color: #9238ec;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
+}
+
+.incoming-message-container {
+  width: 100vw;
+  padding-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.incoming-message {
+  color: black;
+  background-color: #e9dbf6;
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
 }
 </style>
