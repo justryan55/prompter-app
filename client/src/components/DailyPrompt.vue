@@ -7,18 +7,46 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'DailyPrompt',
 
+  data() {
+    return {
+      promptMessage: '',
+      recipient: '',
+      recipientId: '',
+      promptId: '',
+      connectionsInMyCircle: true
+    }
+  },
+
   computed: {
     ...mapState(useUserStore, ['userId'])
   },
 
   methods: {
     handleClick() {
-      this.$router.push('/home/prompt')
+      this.$router.push({
+        path: `/home/prompt/${this.promptId}`,
+        query: {
+          message: this.promptMessage || 'No message',
+          recipient: this.recipient || 'Unknown Recipient',
+          recipientId: this.recipientId || 'Unknown Recipient Id'
+        }
+      })
     },
 
     async fetchPrompt() {
       try {
         const res = await fetchData(`${this.userId}/fetchPrompt`)
+        const data = await res?.json()
+
+        if (res.ok) {
+          this.connectionsInMyCircle = true
+          this.promptMessage = data.prompt
+          this.recipient = data.recipient
+          this.recipientId = data.recipientId
+          this.promptId = data.promptId
+        } else {
+          this.connectionsInMyCircle = false
+        }
       } catch (err) {
         console.log(err)
       }
@@ -32,20 +60,24 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="sub-header-container">
+  <div v-if="this.connectionsInMyCircle" class="sub-header-container">
     <p class="sub-header">Daily Prompt</p>
     <div></div>
     <div></div>
     <div></div>
     <div></div>
   </div>
-  <div class="message-container" @click="handleClick">
+  <div v-if="this.connectionsInMyCircle" class="message-container" @click="handleClick">
     <div class="message-details">
       <p class="prompt-label">Prompt</p>
-      <p class="sender">Ryan Irani</p>
+      <p class="sender">{{ recipient }}</p>
     </div>
-    <p class="prompt-text">What is your favourite memory with Ryan Irani?</p>
+    <p class="prompt-text">{{ promptMessage }}</p>
   </div>
+  <p v-else class="display-message">
+    You don’t have any connections in your circle to send a prompt. Please connect with someone to
+    enable this feature.
+  </p>
 </template>
 
 <style scope>
@@ -99,5 +131,10 @@ export default defineComponent({
 .prompt-text {
   font-size: 1.75rem;
   margin-left: 15px;
+}
+
+.display-message {
+  color: white;
+  text-align: center;
 }
 </style>

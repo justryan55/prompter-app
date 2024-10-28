@@ -16,7 +16,10 @@ const userSchema = new Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     myCircle: [{ type: Object }],
-    messages: { type: [messageSchema], default: [] }
+    messages: { type: [messageSchema], default: [] },
+    lastPromptId: { type: mongoose.Schema.Types.ObjectId, ref: 'Prompt', default: null },
+    lastRecipientId: { type: String, default: null },
+    lastPromptSentAt: { type: Date, default: null }
   },
   { timestamps: true }
 )
