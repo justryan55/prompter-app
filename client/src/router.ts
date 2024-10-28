@@ -34,7 +34,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/home/prompt',
+    path: '/home/prompt/:promptId',
     name: 'Prompt',
     component: PromptPage,
     meta: { requiresAuth: true }
