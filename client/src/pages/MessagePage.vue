@@ -5,15 +5,48 @@ import MessageCard from '@/components/MessageCard.vue'
 import { fetchCurrentUser, fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
 import { defineComponent } from 'vue'
+import { mapState } from 'pinia'
 
 export default defineComponent({
   name: 'MessagePage',
   components: {},
 
+  data() {
+    return {
+      messageId: this.$route.params.messageId,
+      promptMessage: '',
+      recipient: '',
+      message: ''
+    }
+  },
+
+  computed: {
+    ...mapState(useUserStore, ['userId'])
+  },
+
   methods: {
     handleCloseClick() {
       this.$router.push('/messages')
+    },
+
+    async fetchMessage() {
+      try {
+        const res = await fetchData(`${this.userId}/messages/${this.messageId}`, 'GET')
+        const data = await res?.json()
+
+        if (res?.ok) {
+          this.promptMessage = data.message.prompt
+          this.message = data.message.message
+          console.log(data.message)
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
+  },
+
+  mounted() {
+    this.fetchMessage()
   }
 })
 </script>
@@ -32,6 +65,21 @@ export default defineComponent({
         <p class="close-prompt" @click="handleCloseClick">X</p>
       </div>
       <p class="prompt-text">{{ promptMessage }}</p>
+    </div>
+
+    <div class="incoming-message-container">
+      <div class="incoming-message">{{ message }}</div>
+
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <div class="outgoing-message-container">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div class="outgoing-message">Here</div>
     </div>
 
     <div class="input-container">
@@ -128,6 +176,37 @@ export default defineComponent({
   outline: none;
   border: 1.5px #9238ec solid;
   background-color: #fff;
+  box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
+}
+
+.outgoing-message-container {
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 20px;
+}
+
+.outgoing-message {
+  color: white;
+  background-color: #9238ec;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
+}
+
+.incoming-message-container {
+  width: 100vw;
+  padding-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.incoming-message {
+  color: black;
+  background-color: #e9dbf6;
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
 }
 </style>
