@@ -12,12 +12,22 @@ export default defineComponent({
     return {
       promptMessage: '',
       recipient: '',
-      recipientId: ''
+      recipientId: '',
+      message: '',
+      own: true
     }
   },
 
   computed: {
-    ...mapState(useUserStore, ['userId', 'firstName', 'lastName', 'email', 'myCircle', 'messages'])
+    ...mapState(useUserStore, [
+      'userId',
+      'firstName',
+      'lastName',
+      'email',
+      'myCircle',
+      'messages',
+      'dailyPromptMessageId'
+    ])
   },
 
   methods: {
@@ -34,7 +44,27 @@ export default defineComponent({
           prompt: this.promptMessage,
           message: e.target.value
         }
-        await fetchData(`${this.userId}/${connectionId}/new-message`, 'POST', payload)
+        const res = await fetchData(`${this.userId}/${connectionId}/new-message`, 'POST', payload)
+
+        if (res.ok) {
+          const data = await res?.json()
+          this.message = data.message
+          const userStore = useUserStore()
+          await userStore.setdailyPromptMessageId(data.messageId)
+        }
+      }
+    },
+
+    async fetchMessage() {
+      try {
+        const res = await fetchData(`${this.userId}/messages/${this.dailyPromptMessageId}`, 'GET')
+        const data = await res?.json()
+        if (res?.ok) {
+          this.message = data.message.message
+          this.own = data.message.sender[0] === this.userId
+        }
+      } catch (err) {
+        console.log(err)
       }
     }
   },
@@ -43,6 +73,7 @@ export default defineComponent({
     this.promptMessage = this.$route.query.message
     this.recipient = this.$route.query.recipient
     this.recipientId = this.$route.query.recipientId
+    this.fetchMessage()
   }
 })
 </script>
@@ -63,22 +94,12 @@ export default defineComponent({
       <p class="prompt-text">{{ promptMessage }}</p>
     </div>
 
-    <div class="outgoing-message-container">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div class="outgoing-message">Here</div>
+    <div v-if="message" :class="own ? 'outgoing-message-container' : 'incoming-message-container'">
+      <div :class="own ? 'outgoing-message' : 'incoming-message'">{{ message }}</div>
     </div>
 
-    <div class="incoming-message-container">
-      <div class="incoming-message">Here</div>
-
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
     <!-- <NavigationBar /> -->
-    <div class="input-container">
+    <div v-if="!this.message" class="input-container">
       <input
         type="text"
         class="input"
@@ -86,6 +107,16 @@ export default defineComponent({
         @keydown="handleSubmit"
       />
     </div>
+    <div v-else class="awaiting-text">Awaiting a response</div>
+
+    <!-- <div v-else class="input-container">
+      <input
+        type="text"
+        class="input"
+        placeholder="You have already responded to this prompt."
+        readonly
+      />
+    </div> -->
   </div>
 </template>
 
@@ -147,6 +178,10 @@ export default defineComponent({
   padding-right: 20px;
 }
 
+.close-prompt:hover {
+  cursor: pointer;
+}
+
 .prompt-text {
   font-size: 1.75rem;
   margin-left: 15px;
@@ -178,7 +213,8 @@ export default defineComponent({
 .outgoing-message-container {
   width: 100vw;
   display: flex;
-  justify-content: space-around;
+  align-items: flex-end;
+  justify-content: flex-end;
   padding-top: 20px;
 }
 
@@ -195,7 +231,7 @@ export default defineComponent({
   padding-top: 20px;
   display: flex;
   align-items: flex-start;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .incoming-message {
@@ -204,5 +240,12 @@ export default defineComponent({
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 8px rgba(146, 56, 236, 0.4);
+}
+
+.awaiting-text {
+  color: white;
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 50px;
 }
 </style>
