@@ -1,6 +1,7 @@
 <script lang="ts">
 import { fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
+import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -13,23 +14,15 @@ export default defineComponent({
   },
 
   computed: {
-    userId() {
-      const userStore = useUserStore()
-      return userStore.userId
-    },
-    myCircle() {
-      const userStore = useUserStore()
-      return userStore.myCircle
-    },
-    mappedCircle() {
-      return this.myCircle.map((user) => ({
-        firstName: user.firstName,
-        lastName: user.firstName,
-        id: user.id
-      }))
-    },
+    ...mapState(useUserStore, ['userId', 'myCircle']),
     isConnected() {
       return this.connectionConnected
+    }
+  },
+
+  data() {
+    return {
+      connectionStatus: this.connectionConnected
     }
   },
 
@@ -39,28 +32,16 @@ export default defineComponent({
         const endpoint = `${this.userId}/${this.connectionUserId}/toggle-connection`
         const res = await fetchData(endpoint, 'POST')
         const data = await res?.json()
-        console.log(data)
         if (res.ok) {
-          // this.isConnected = !this.isConnected
+          this.connectionStatus = !this.connectionStatus
         }
-      } catch (err) {
-        console.log(err)
-      }
-    },
-
-    async checkConnection() {
-      try {
-        const connectionExists = this.mappedCircle.some((user) => user.id === this.connectionUserId)
-        return connectionExists ? this.isConnected : false
       } catch (err) {
         console.log(err)
       }
     }
   },
 
-  mounted() {
-    this.checkConnection()
-  }
+  mounted() {}
 })
 </script>
 
@@ -84,7 +65,7 @@ export default defineComponent({
     <div>
       <p class="name">{{ connectionFirstName }} {{ connectionLastName }}</p>
     </div>
-    <p class="button" @click="handleClick">{{ isConnected ? 'Connected' : 'Connect' }}</p>
+    <p class="button" @click="handleClick">{{ connectionStatus ? 'Connected' : 'Connect' }}</p>
   </div>
 </template>
 
