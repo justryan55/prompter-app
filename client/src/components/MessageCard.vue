@@ -15,7 +15,6 @@ export default defineComponent({
   methods: {
     handleClick() {
       this.$router.push(`/messages/${this.messageId}`)
-      console.log(this.messageId)
     }
   }
 })
