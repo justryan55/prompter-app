@@ -4,7 +4,8 @@ const messageSchema = new Schema(
   {
     sender: [{ type: String }],
     prompt: { type: String },
-    message: { type: Object }
+    message: { type: Object },
+    responses: [{ type: Object }]
   },
   { timestamps: true }
 )
