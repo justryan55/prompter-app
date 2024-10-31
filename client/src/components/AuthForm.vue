@@ -1,19 +1,29 @@
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue'
 import AuthButton from './AuthButton.vue'
 
-const props = defineProps<{
-  auth: string
-}>()
-
-const payload = {
-  email: '',
-  password: '',
-  ...(props.auth === 'register' && {
-    firstName: '',
-    lastName: '',
-    confirmPassword: ''
-  })
-}
+export default defineComponent({
+  components: {
+    AuthButton
+  },
+  props: {
+    auth: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      payload: {
+        email: '',
+        password: '',
+        firstName: this.auth === 'register' ? '' : undefined,
+        lastName: this.auth === 'register' ? '' : undefined,
+        confirmPassword: this.auth === 'register' ? '' : undefined
+      }
+    }
+  }
+})
 </script>
 
 <template>
