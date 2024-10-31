@@ -46,9 +46,7 @@ export default defineComponent({
   align-items: center;
   width: 100vw;
   color: white;
-  /* background-color: white; */
   font-size: 2rem;
   font-weight: 700;
-  /* border-bottom: 1px white solid; */
 }
 </style>

@@ -12,7 +12,7 @@ const handleClick = async () => {
   await router.push('/login')
 }
 
-const isCurrentRoute = (path) => {
+const isCurrentRoute = (path: String) => {
   return route.path === path
 }
 </script>

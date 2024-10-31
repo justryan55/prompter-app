@@ -31,8 +31,7 @@ export default defineComponent({
       try {
         const endpoint = `${this.userId}/${this.connectionUserId}/toggle-connection`
         const res = await fetchData(endpoint, 'POST')
-        const data = await res?.json()
-        if (res.ok) {
+        if (res?.ok) {
           this.connectionStatus = !this.connectionStatus
         }
       } catch (err) {

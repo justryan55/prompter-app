@@ -1,7 +1,6 @@
 <script lang="ts">
 import ConnectionCard from '@/components/ConnectionCard.vue'
 import NavigationBar from '@/components/NavigationBar.vue'
-import { fetchCurrentUser, fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
 import { mapActions, mapState } from 'pinia'
 import { defineComponent } from 'vue'

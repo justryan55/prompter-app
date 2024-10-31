@@ -14,7 +14,8 @@ export default defineComponent({
       recipient: '',
       recipientId: '',
       message: '',
-      own: true
+      own: true,
+      loading: false
     }
   },
 
@@ -57,6 +58,7 @@ export default defineComponent({
 
     async fetchMessage() {
       try {
+        this.loading = true
         const res = await fetchData(
           `${this.userId}/${this.recipientId}/fetchDailyPromptMessageId`,
           'GET'
@@ -66,6 +68,8 @@ export default defineComponent({
         await userStore.setdailyPromptMessageId(data.message)
 
         if (res?.ok) {
+          this.loading = false
+
           const res = await fetchData(
             `${this.userId}/fetchMessages/${this.dailyPromptMessageId}`,
             'GET'
@@ -73,7 +77,6 @@ export default defineComponent({
           const data = await res?.json()
 
           if (res?.ok) {
-            console.log(data)
             this.promptMessage = data.message.prompt
             this.message = data.message.message
             this.own = data.message.sender[0] === this.userId
@@ -112,6 +115,10 @@ export default defineComponent({
       <p class="prompt-text">{{ promptMessage }}</p>
     </div>
 
+    <div v-if="loading" class="loading-container">
+      <div class="loading-text">Fetching messages...</div>
+    </div>
+
     <div v-if="message" :class="own ? 'outgoing-message-container' : 'incoming-message-container'">
       <div :class="own ? 'outgoing-message' : 'incoming-message'">{{ message }}</div>
     </div>
@@ -120,8 +127,9 @@ export default defineComponent({
       <div :class="own ? 'incoming-message' : 'outgoing-message'">{{ response }}</div>
     </div>
 
-    <!-- <NavigationBar /> -->
-    <div v-if="!this.message" class="input-container">
+    <div v-if="loading" class="input-container"></div>
+
+    <div v-else-if="!this.message && !loading" class="input-container">
       <input
         type="text"
         class="input"
@@ -129,20 +137,11 @@ export default defineComponent({
         @keydown="handleSubmit"
       />
     </div>
-    <div v-else-if="message && response" class="awaiting-text">
+    <div v-else-if="message && response && !loading" class="awaiting-text">
       You have both answered the daily prompt
     </div>
 
     <div v-else class="awaiting-text">Awaiting a response</div>
-
-    <!-- <div v-else class="input-container">
-      <input
-        type="text"
-        class="input"
-        placeholder="You have already responded to this prompt."
-        readonly
-      />
-    </div> -->
   </div>
 </template>
 
@@ -273,5 +272,18 @@ export default defineComponent({
   position: fixed;
   bottom: 0;
   margin-bottom: 50px;
+}
+
+.loading-container {
+  width: 100vw;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-text {
+  color: white;
+  padding: 20px;
 }
 </style>

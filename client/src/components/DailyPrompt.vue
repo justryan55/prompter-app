@@ -35,10 +35,10 @@ export default defineComponent({
 
     async fetchPrompt() {
       try {
-        const res = await fetchData(`${this.userId}/fetchPrompt`)
+        const res = await fetchData(`${this.userId}/fetchPrompt`, 'GET')
         const data = await res?.json()
 
-        if (res.ok) {
+        if (res?.ok) {
           this.connectionsInMyCircle = true
           this.promptMessage = data.prompt
           this.recipient = data.recipient

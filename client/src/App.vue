@@ -14,6 +14,5 @@
   justify-content: center;
   align-items: center;
   max-width: 100vw;
-  /* border: 1px white solid; */
 }
 </style>

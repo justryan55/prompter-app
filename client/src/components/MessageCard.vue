@@ -45,7 +45,6 @@ export default defineComponent({
 .message-details {
   display: grid;
   grid-template-columns: 1.5fr 3fr;
-  /* justify-content: space-between; */
   border-bottom: 1px rgb(0, 0, 0, 0.5) solid;
 }
 

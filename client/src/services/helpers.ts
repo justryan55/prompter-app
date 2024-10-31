@@ -1,6 +1,4 @@
-import { useUserStore } from '@/stores/user'
-
-export const fetchData = async (url, method, payload) => {
+export const fetchData = async (url: string, method: string, payload?: any) => {
   try {
     const params = {
       method: method,
@@ -18,27 +16,3 @@ export const fetchData = async (url, method, payload) => {
     console.log('Error fetching data:', err)
   }
 }
-
-// export const fetchCurrentUser = () => {
-//   const userStore = useUserStore()
-//   const { userId, firstName, lastName, email, myCircle } = userStore
-
-//   return { userId, firstName, lastName, email, myCircle }
-// }
-
-// export const fetchCurrentUser = () => {
-//   const userStore = useUserStore()
-//   const userId = userStore.userId
-//   return fetchData(`getCurrentUser/${userId}`, 'GET')
-//     .then((res) => res?.json())
-//     .then((data) =>
-//       userStore.setUser({
-//         userId: data.message.userId,
-//         firstName: data.message.firstName,
-//         lastName: data.message.lastName,
-//         email: data.message.email,
-//         myCircle: data.message.myCircle,
-//         messages: data.message.messages
-//       })
-//     )
-// }

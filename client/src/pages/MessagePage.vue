@@ -1,8 +1,5 @@
 <script lang="ts">
-import NavigationBar from '@/components/NavigationBar.vue'
-import MessageCard from '@/components/MessageCard.vue'
-
-import { fetchCurrentUser, fetchData } from '@/services/helpers'
+import { fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
 import { defineComponent } from 'vue'
 import { mapState } from 'pinia'

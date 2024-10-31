@@ -2,7 +2,7 @@
 import { fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
 import { jwtDecode } from 'jwt-decode'
-import { defineComponent, defineProps, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({

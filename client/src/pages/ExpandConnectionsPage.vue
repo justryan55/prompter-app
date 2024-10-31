@@ -5,8 +5,7 @@ import { fetchData } from '@/services/helpers'
 
 import { useUserStore } from '@/stores/user'
 import { mapState } from 'pinia'
-import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ExpandConnectionsPage',
