@@ -57,12 +57,29 @@ export default defineComponent({
 
     async fetchMessage() {
       try {
-        const res = await fetchData(`${this.userId}/messages/${this.dailyPromptMessageId}`, 'GET')
+        const res = await fetchData(
+          `${this.userId}/${this.recipientId}/fetchDailyPromptMessageId`,
+          'GET'
+        )
         const data = await res?.json()
+        const userStore = useUserStore()
+        await userStore.setdailyPromptMessageId(data.message)
 
         if (res?.ok) {
-          this.message = data.message.message
-          this.own = data.message.sender[0] === this.userId
+          const res = await fetchData(
+            `${this.userId}/fetchMessages/${this.dailyPromptMessageId}`,
+            'GET'
+          )
+          const data = await res?.json()
+
+          if (res?.ok) {
+            console.log(data)
+            this.promptMessage = data.message.prompt
+            this.message = data.message.message
+            this.own = data.message.sender[0] === this.userId
+            this.sender = data.message.sender[1] + ' ' + data.message.sender[2]
+            this.response = data.message.responses[0].message
+          }
         }
       } catch (err) {
         console.log(err)
@@ -99,6 +116,10 @@ export default defineComponent({
       <div :class="own ? 'outgoing-message' : 'incoming-message'">{{ message }}</div>
     </div>
 
+    <div v-if="response" :class="own ? 'incoming-message-container' : 'outgoing-message-container'">
+      <div :class="own ? 'incoming-message' : 'outgoing-message'">{{ response }}</div>
+    </div>
+
     <!-- <NavigationBar /> -->
     <div v-if="!this.message" class="input-container">
       <input
@@ -108,6 +129,10 @@ export default defineComponent({
         @keydown="handleSubmit"
       />
     </div>
+    <div v-else-if="message && response" class="awaiting-text">
+      You have both answered the daily prompt
+    </div>
+
     <div v-else class="awaiting-text">Awaiting a response</div>
 
     <!-- <div v-else class="input-container">

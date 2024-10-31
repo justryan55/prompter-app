@@ -129,6 +129,22 @@ router.post('/:userId/messages/:messageId/add-response', async (req, res) => {
   }
 })
 
+router.get('/:userId/:connectionId/fetchDailyPromptMessageId', async (req, res) => {
+  try {
+    const { userId, connectionId } = req.params
+
+    const user = await userModel.findById(userId)
+    const messageId = user.messages[user.messages.length - 1].explicitId
+
+    return res.status(200).json({
+      success: true,
+      message: messageId
+    })
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 // router.get('/:userId/fetchMessages', async (req, res) => {
 //   try {
 //     const { userId } = req.params
