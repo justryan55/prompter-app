@@ -43,7 +43,7 @@ export default defineComponent({
       <MessageCard
         v-for="(message, id) in messages"
         :key="message._id"
-        :messageId="message._id"
+        :messageId="message.explicitId"
         :senderId="message.sender[0]"
         :senderFirstName="message.sender[1]"
         :senderLastName="message.sender[2]"

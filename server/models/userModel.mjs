@@ -2,10 +2,12 @@ import { Schema, mongoose } from 'mongoose'
 
 const messageSchema = new Schema(
   {
+    explicitId: { type: String },
     sender: [{ type: String }],
     prompt: { type: String },
     message: { type: Object },
-    responses: [{ type: Object }]
+    responses: [{ type: Object }],
+    connectionId: { type: String }
   },
   { timestamps: true }
 )

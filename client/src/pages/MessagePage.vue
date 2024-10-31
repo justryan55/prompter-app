@@ -49,6 +49,7 @@ export default defineComponent({
 
           if (res?.ok) {
             this.response = data.message.responses[0].message
+            this.fetchMessage()
           }
         } catch (err) {
           console.log(err)
@@ -58,7 +59,7 @@ export default defineComponent({
 
     async fetchMessage() {
       try {
-        const res = await fetchData(`${this.userId}/messages/${this.messageId}`, 'GET')
+        const res = await fetchData(`${this.userId}/fetchMessages/${this.messageId}`, 'GET')
         const data = await res?.json()
 
         if (res?.ok) {
@@ -66,6 +67,7 @@ export default defineComponent({
           this.message = data.message.message
           this.own = data.message.sender[0] === this.userId
           this.sender = data.message.sender[1] + ' ' + data.message.sender[2]
+          console.log(data)
           this.response = data.message.responses[0].message
         }
       } catch (err) {

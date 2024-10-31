@@ -11,40 +11,68 @@ router.post('/:userId/:connectionId/new-message', async (req, res) => {
     const user = await userModel.findById(userId)
     const connection = await userModel.findById(connectionId)
 
-    const message = {
+    let sentMessage = {
       sender: [payload.sender.userId, payload.sender.firstName, payload.sender.lastName],
       prompt: payload.prompt,
       message: payload.message,
-      responses: []
+      responses: [],
+      explicitId: '',
+      connectionId: connection.id
     }
 
-    user.messages.push(message)
-    connection.messages.push(message)
-    await user.save()
-    await connection.save()
+    let receivingMessage = {
+      sender: [payload.sender.userId, payload.sender.firstName, payload.sender.lastName],
+      prompt: payload.prompt,
+      message: payload.message,
+      responses: [],
+      explicitId: '',
+      connectionId: userId
+    }
+
+    user.messages.push(sentMessage)
+    connection.messages.push(receivingMessage)
 
     const messageId = user.messages[user.messages.length - 1].id
 
+    user.messages[user.messages.length - 1].explicitId = messageId
+    connection.messages[connection.messages.length - 1].explicitId = messageId
+
+    await user.save()
+    await connection.save()
+
     return res.status(200).json({
       success: true,
-      message: payload.message,
-      messageId: messageId
+      message: payload.message
     })
   } catch (err) {
     console.log(err)
   }
 })
 
-router.get('/:userId/messages/:messageId', async (req, res) => {
+router.get('/:userId/fetchMessages/:messageId', async (req, res) => {
   try {
     const { messageId, userId } = req.params
 
     const user = await userModel.findById(userId)
 
+    const currentUserMessage = user.messages.find((msg) => msg.explicitId === messageId)
+
+    if (!currentUserMessage) {
+      return res.status(404).json({
+        success: true,
+        message: 'Message not found'
+      })
+    }
+    const connection = await userModel.findById(currentUserMessage.connectionId)
+
+    // const connectionMessage = connection.messages.find((msg) => console.log(msg.id))
+
+    const connectionMessage = connection.messages.find((msg) => msg.explicitId === messageId)
+
     const messages = user.messages
 
     const message = messages.map((message) => {
-      if (messageId === message.id) {
+      if (messageId === message.explicitId) {
         return res.status(200).json({
           success: true,
           message: message
@@ -62,23 +90,39 @@ router.post('/:userId/messages/:messageId/add-response', async (req, res) => {
     const payload = req.body
     const user = await userModel.findById(userId)
 
-    const message = user.messages.find((msg) => msg.id === messageId)
+    const currentUserMessage = user.messages.find((msg) => msg.explicitId === messageId)
+    const connection = await userModel.findById(currentUserMessage.connectionId)
 
-    if (!message) {
+    const connectionMessage = connection.messages.find((msg) => msg.explicitId === messageId)
+
+    // const connectionMessage = connection.messages.find((msg) => msg.id === messageId)
+    // console.log(connectionMessage)
+
+    if (!currentUserMessage || !connectionMessage) {
       return res.status(404).json({
         success: false,
         message: 'Message not found'
       })
     }
 
-    console.log(message.responses)
+    await userModel.updateOne(
+      { _id: userId, 'messages.explicitId': messageId },
+      { $push: { 'messages.$.responses': payload } }
+    )
 
-    message.responses.push(payload)
-    await user.save()
+    await userModel.updateOne(
+      { _id: currentUserMessage.connectionId, 'messages.explicitId': messageId },
+      { $push: { 'messages.$.responses': payload } }
+    )
+
+    // currentUserMessage.responses.push(payload)
+    // connectionMessage.responses.push(payload)
+    // await user.save()
+    // await connection.save()
 
     return res.status(200).json({
       success: true,
-      message: message
+      message: currentUserMessage
     })
   } catch (err) {
     console.log(err)

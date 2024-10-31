@@ -50,7 +50,7 @@ export default defineComponent({
           const data = await res?.json()
           this.message = data.message
           const userStore = useUserStore()
-          await userStore.setdailyPromptMessageId(data.messageId)
+          await userStore.setdailyPromptMessageId(data.message.explicitId)
         }
       }
     },
@@ -59,6 +59,7 @@ export default defineComponent({
       try {
         const res = await fetchData(`${this.userId}/messages/${this.dailyPromptMessageId}`, 'GET')
         const data = await res?.json()
+
         if (res?.ok) {
           this.message = data.message.message
           this.own = data.message.sender[0] === this.userId
