@@ -56,7 +56,7 @@ export const useUserStore = defineStore({
       }
     },
 
-    setdailyPromptMessageId(messageId) {
+    setDailyPromptMessageId(messageId) {
       this.dailyPromptMessageId = messageId
     }
   },

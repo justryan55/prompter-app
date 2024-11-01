@@ -51,7 +51,7 @@ export default defineComponent({
           const data = await res?.json()
           this.message = data.message
           const userStore = useUserStore()
-          await userStore.setdailyPromptMessageId(data.message.explicitId)
+          await userStore.setDailyPromptMessageId(data.message.explicitId)
         }
       }
     },
@@ -65,25 +65,30 @@ export default defineComponent({
         )
         const data = await res?.json()
         const userStore = useUserStore()
-        await userStore.setdailyPromptMessageId(data.message)
+        await userStore.setDailyPromptMessageId(data.message)
 
         if (res?.ok) {
           this.loading = false
 
-          const res = await fetchData(
+          const resMessage = await fetchData(
             `${this.userId}/fetchMessages/${this.dailyPromptMessageId}`,
             'GET'
           )
-          const data = await res?.json()
+          const dataMessage = await resMessage?.json()
 
-          if (res?.ok) {
-            this.promptMessage = data.message.prompt
-            this.message = data.message.message
-            this.own = data.message.sender[0] === this.userId
-            this.sender = data.message.sender[1] + ' ' + data.message.sender[2]
-            this.response = data.message.responses[0].message
+          if (resMessage?.ok) {
+            this.promptMessage = dataMessage.message.prompt
+            this.message = dataMessage.message.message
+            this.own = dataMessage.message.sender[0] === this.userId
+            this.sender = dataMessage.message.sender[1] + ' ' + dataMessage.message.sender[2]
+            this.response = dataMessage.message.responses[0].message
+            return
           }
         }
+        this.loading = false
+        this.promptMessage = this.$route.query.message
+        this.recipient = this.$route.query.recipient
+        this.recipientId = this.$route.query.recipientId
       } catch (err) {
         console.log(err)
       }

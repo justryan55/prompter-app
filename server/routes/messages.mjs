@@ -134,12 +134,32 @@ router.get('/:userId/:connectionId/fetchDailyPromptMessageId', async (req, res) 
     const { userId, connectionId } = req.params
 
     const user = await userModel.findById(userId)
-    const messageId = user.messages[user.messages.length - 1].explicitId
 
-    return res.status(200).json({
-      success: true,
-      message: messageId
-    })
+    if (!user.messages || user.messages.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No messages found for this user'
+      })
+    }
+
+    // const messageId = user.messages[user.messages.length - 1].explicitId
+    const messageId = user.messages.find(
+      (msg) => msg.explicitId === user.lastPromptId.id.toString()
+    )
+
+    if (!messageId) {
+      return res.status(404).json({
+        success: false,
+        message: 'There are no messages associated with this prompt'
+      })
+    }
+
+    if (messageId) {
+      return res.status(200).json({
+        success: true,
+        message: messageId
+      })
+    }
   } catch (err) {
     console.log(err)
   }
