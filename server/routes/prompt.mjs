@@ -19,8 +19,17 @@ router.get(`/:userId/fetchPrompt`, async (req, res) => {
     const now = new Date()
     const lastPromptSentAt = user.lastPromptSentAt
 
-    if (lastPromptSentAt && now - lastPromptSentAt < 24 * 60 * 60 * 1000) {
+    const lastPromptDate = lastPromptSentAt ? new Date(lastPromptSentAt) : null
+
+    const isSameDay =
+      lastPromptDate &&
+      lastPromptDate.getFullYear() === now.getFullYear() &&
+      lastPromptDate.getMonth() === now.getMonth() &&
+      lastPromptDate.getDate() === now.getDate()
+
+    if (lastPromptDate && isSameDay) {
       const savedPrompt = await promptModel.findById(user.lastPromptId)
+
       const recipientId = user.lastRecipientId
       const recipient = user.myCircle.find((person) => person.id === recipientId)
 
