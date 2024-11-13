@@ -1,53 +1,30 @@
+import type { User } from '@/interfaces/userInterface'
 import { fetchData } from '@/services/helpers'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore({
   id: 'user',
   state: () => ({
-    userId: 0,
-    firstName: '',
-    lastName: '',
-    email: '',
-    myCircle: {},
-    messages: [],
-    dailyPromptMessageId: ''
+    user: undefined as undefined | User,
+    dailyPromptMessageId: '',
   }),
-
   actions: {
-    setUser(user) {
-      this.userId = user.userId
-      this.firstName = user.firstName
-      this.lastName = user.lastName
-      this.email = user.email
-      this.myCircle = user.myCircle
-      this.messages = user.messages
+    setUser(user: User) {
+      this.user = user;
     },
-
     clearUser() {
-      this.userId = ''
-      this.firstName = ''
-      this.lastName = ''
-      this.email = ''
-      this.myCircle = {}
-      this.messages = []
+      this.user = undefined;
     },
-
     async fetchCurrentUser() {
-      const userId = this.userId
+      const userId = this.user?.userId;
 
       try {
-        const res = await fetchData(`getCurrentUser/${userId}`, 'GET')
-        const data = await res?.json()
+        const res = await fetchData(`getCurrentUser/${userId}`, 'GET');
+        const data = await res?.json();
 
-        if (res.ok) {
-          this.setUser({
-            userId: data.message.userId,
-            firstName: data.message.firstName,
-            lastName: data.message.lastName,
-            email: data.message.email,
-            myCircle: data.message.myCircle,
-            messages: data.message.messages
-          })
+        if (res?.ok) {
+          const user = data.message as User;
+          this.setUser(user);
         } else {
           console.log('Error fetching user information')
         }
@@ -55,14 +32,12 @@ export const useUserStore = defineStore({
         console.log('Fetch failed', err)
       }
     },
-
-    setDailyPromptMessageId(messageId) {
-      this.dailyPromptMessageId = messageId
+    setDailyPromptMessageId(messageId: string) {
+      this.dailyPromptMessageId = messageId;
     }
   },
   persist: {
     storage: localStorage,
-    // pick: ['user']
-    paths: ['user']
+    pick: ['user'],
   }
 })

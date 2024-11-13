@@ -14,7 +14,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState(useUserStore, ['userId', 'messages'])
+    ...mapState(useUserStore, ['user'])
   },
 
   methods: {
@@ -38,9 +38,9 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-if="messages && Object.values(messages).length > 0">
+    <div v-if="user && user.messages && Object.values(user.messages).length > 0">
       <MessageCard
-        v-for="(message, id) in messages"
+        v-for="(message, id) in user.messages"
         :key="message._id"
         :messageId="message.explicitId"
         :senderId="message.sender[0]"
