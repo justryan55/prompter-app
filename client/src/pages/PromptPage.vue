@@ -65,7 +65,8 @@ export default defineComponent({
         )
         const data = await res?.json()
         const userStore = useUserStore()
-        await userStore.setDailyPromptMessageId(data.message)
+        console.log(data.message)
+        userStore.setDailyPromptMessageId(data.message.explicitId)
 
         if (res?.ok) {
           this.loading = false

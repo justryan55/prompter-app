@@ -1,4 +1,6 @@
 import express from 'express'
+import mongoose from 'mongoose'
+
 import userModel from '../models/userModel.mjs'
 
 const router = express.Router()
@@ -11,31 +13,27 @@ router.post('/:userId/:connectionId/new-message', async (req, res) => {
     const user = await userModel.findById(userId)
     const connection = await userModel.findById(connectionId)
 
-    let sentMessage = {
-      sender: [payload.sender.userId, payload.sender.firstName, payload.sender.lastName],
+    const sentMessage = {
+      sender: {
+        userId: payload.sender.userId,
+        firstName: payload.sender.firstName,
+        lastName: payload.sender.lastName
+      },
       prompt: payload.prompt,
       message: payload.message,
       responses: [],
-      explicitId: '',
+      explicitId: user.lastPromptId.toString(),
+      // explicitId: new mongoose.Types.ObjectId(),
       connectionId: connection.id
     }
 
-    let receivingMessage = {
-      sender: [payload.sender.userId, payload.sender.firstName, payload.sender.lastName],
-      prompt: payload.prompt,
-      message: payload.message,
-      responses: [],
-      explicitId: '',
+    const receivingMessage = {
+      ...sentMessage,
       connectionId: userId
     }
 
     user.messages.push(sentMessage)
     connection.messages.push(receivingMessage)
-
-    const messageId = user.messages[user.messages.length - 1].id
-
-    user.messages[user.messages.length - 1].explicitId = messageId
-    connection.messages[connection.messages.length - 1].explicitId = messageId
 
     await user.save()
     await connection.save()
@@ -142,10 +140,7 @@ router.get('/:userId/:connectionId/fetchDailyPromptMessageId', async (req, res) 
       })
     }
 
-    // const messageId = user.messages[user.messages.length - 1].explicitId
-    const messageId = user.messages.find(
-      (msg) => msg.explicitId === user.lastPromptId.id.toString()
-    )
+    const messageId = user.messages.find((msg) => msg.explicitId === user.lastPromptId.toString())
 
     if (!messageId) {
       return res.status(404).json({

@@ -3,7 +3,11 @@ import { Schema, mongoose } from 'mongoose'
 const messageSchema = new Schema(
   {
     explicitId: { type: String },
-    sender: [{ type: String }],
+    sender: {
+      userId: { type: String },
+      firstName: { type: String },
+      lastName: { type: String }
+    },
     prompt: { type: String },
     message: { type: Object },
     responses: [{ type: Object }],
