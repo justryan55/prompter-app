@@ -20,15 +20,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState(useUserStore, [
-      'userId',
-      'firstName',
-      'lastName',
-      'email',
-      'myCircle',
-      'messages',
-      'dailyPromptMessageId'
-    ])
+    ...mapState(useUserStore, ['user', 'dailyPromptMessageId'])
   },
 
   methods: {
@@ -41,11 +33,19 @@ export default defineComponent({
         const connectionId = this.recipientId
 
         const payload = {
-          sender: { userId: this.userId, firstName: this.firstName, lastName: this.lastName },
+          sender: {
+            userId: this.user.userId,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName
+          },
           prompt: this.promptMessage,
           message: e.target.value
         }
-        const res = await fetchData(`${this.userId}/${connectionId}/new-message`, 'POST', payload)
+        const res = await fetchData(
+          `${this.user.userId}/${connectionId}/new-message`,
+          'POST',
+          payload
+        )
 
         if (res.ok) {
           const data = await res?.json()
@@ -60,7 +60,7 @@ export default defineComponent({
       try {
         this.loading = true
         const res = await fetchData(
-          `${this.userId}/${this.recipientId}/fetchDailyPromptMessageId`,
+          `${this.user.userId}/${this.recipientId}/fetchDailyPromptMessageId`,
           'GET'
         )
         const data = await res?.json()
@@ -72,7 +72,7 @@ export default defineComponent({
           this.loading = false
 
           const resMessage = await fetchData(
-            `${this.userId}/fetchMessages/${this.dailyPromptMessageId}`,
+            `${this.user.userId}/fetchMessages/${this.dailyPromptMessageId}`,
             'GET'
           )
           const dataMessage = await resMessage?.json()

@@ -14,7 +14,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState(useUserStore, ['userId', 'myCircle']),
+    ...mapState(useUserStore, ['user']),
     isConnected() {
       return this.connectionConnected
     }
@@ -29,7 +29,7 @@ export default defineComponent({
   methods: {
     async handleClick() {
       try {
-        const endpoint = `${this.userId}/${this.connectionUserId}/toggle-connection`
+        const endpoint = `${this.user.userId}/${this.connectionUserId}/toggle-connection`
         const res = await fetchData(endpoint, 'POST')
         if (res?.ok) {
           this.connectionStatus = !this.connectionStatus

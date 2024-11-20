@@ -21,7 +21,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState(useUserStore, ['userId', 'firstName', 'lastName'])
+    ...mapState(useUserStore, ['user'])
   },
 
   methods: {
@@ -37,7 +37,7 @@ export default defineComponent({
             message: e.target.value
           }
           const res = await fetchData(
-            `${this.userId}/messages/${this.messageId}/add-response`,
+            `${this.user.userId}/messages/${this.messageId}/add-response`,
             'POST',
             payload
           )
@@ -56,14 +56,18 @@ export default defineComponent({
 
     async fetchMessage() {
       try {
-        const res = await fetchData(`${this.userId}/fetchMessages/${this.messageId}`, 'GET')
+        const res = await fetchData(`${this.user.userId}/fetchMessages/${this.messageId}`, 'GET')
         const data = await res?.json()
+        console.log(data.message)
 
         if (res?.ok) {
           this.promptMessage = data.message.prompt
+
           this.message = data.message.message
-          this.own = data.message.sender[0] === this.userId
-          this.sender = data.message.sender[1] + ' ' + data.message.sender[2]
+
+          this.own = data.message.sender.userId === this.user.userId
+
+          this.sender = data.message.sender.firstName + ' ' + data.message.sender.lastName
           this.response = data.message.responses[0].message
         }
       } catch (err) {

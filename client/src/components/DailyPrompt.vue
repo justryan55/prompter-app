@@ -18,7 +18,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState(useUserStore, ['userId'])
+    ...mapState(useUserStore, ['user'])
   },
 
   methods: {
@@ -35,7 +35,7 @@ export default defineComponent({
 
     async fetchPrompt() {
       try {
-        const res = await fetchData(`${this.userId}/fetchPrompt`, 'GET')
+        const res = await fetchData(`${this.user.userId}/fetchPrompt`, 'GET')
         const data = await res?.json()
 
         if (res?.ok) {

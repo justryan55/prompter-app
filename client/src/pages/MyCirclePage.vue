@@ -13,7 +13,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState(useUserStore, ['userId', 'firstName', 'lastName', 'email', 'myCircle', 'messages'])
+    ...mapState(useUserStore, ['user'])
   },
 
   methods: {
@@ -34,7 +34,7 @@ export default defineComponent({
   <div class="layout">
     <div class="fixed">
       <div class="header-container">
-        <p class="header">{{ firstName }}'s Circle</p>
+        <p class="header">{{ user.firstName }}'s Circle</p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="ionicon"
@@ -76,9 +76,12 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-if="myCircle && Object.values(myCircle).length > 0" class="card-layout">
+    <div
+      v-if="user && user.myCircle && Object.values(user.myCircle).length > 0"
+      class="card-layout"
+    >
       <ConnectionCard
-        v-for="(connection, index) in myCircle"
+        v-for="(connection, index) in user.myCircle"
         :key="index"
         :connection="connection"
         :connectionUserId="connection.id"
