@@ -14,7 +14,13 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState(useUserStore, ['user'])
+    ...mapState(useUserStore, ['user']),
+
+    filteredMessages() {
+      return this.user && this.user.messages
+        ? Object.values(this.user.messages).filter((message) => !message.isDeleted)
+        : []
+    }
   },
 
   methods: {
@@ -38,10 +44,10 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-if="user && user.messages && Object.values(user.messages).length > 0">
+    <div v-if="filteredMessages.length > 0">
       <!-- user.messages is crashing this page -->
       <MessageCard
-        v-for="message in user.messages"
+        v-for="message in filteredMessages"
         :key="message._id"
         :messageId="message.explicitId"
         :senderId="message.sender?.userId || ''"

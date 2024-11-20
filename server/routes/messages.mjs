@@ -160,26 +160,35 @@ router.get('/:userId/:connectionId/fetchDailyPromptMessageId', async (req, res) 
   }
 })
 
-// router.get('/:userId/fetchMessages', async (req, res) => {
-//   try {
-//     const { userId } = req.params
+router.delete(`/:userId/:messageId/deleteMessage`, async (req, res) => {
+  try {
+    const { userId, messageId } = req.params
 
-//     const user = await userModel.findById(userId)
+    const user = await userModel.findById(userId)
 
-//     if (!user) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'No user found'
-//       })
-//     }
+    const message = user.messages.find((msg) => msg.explicitId === messageId)
 
-//     return res.status(200).json({
-//       success: true,
-//       message: user.messages
-//     })
-//   } catch (err) {
-//     console.log(err)
-//   }
-// })
+    console.log(message)
+
+    if (!message) {
+      return res.status(404).json({
+        success: false,
+        message: 'There is no message associated with that ID'
+      })
+    }
+
+    message.isDeleted = true
+    message.deletedAt = new Date()
+
+    await user.save()
+
+    return res.status(200).json({
+      success: true,
+      message: 'Message deleted'
+    })
+  } catch (err) {
+    console.log(err)
+  }
+})
 
 export default router

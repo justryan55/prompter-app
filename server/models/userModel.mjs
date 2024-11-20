@@ -11,7 +11,14 @@ const messageSchema = new Schema(
     prompt: { type: String },
     message: { type: Object },
     responses: [{ type: Object }],
-    connectionId: { type: String }
+    connectionId: { type: String },
+    isDeleted: {
+      type: Boolean,
+      default: false
+    },
+    deletedAt: {
+      type: Date
+    }
   },
   { timestamps: true }
 )
