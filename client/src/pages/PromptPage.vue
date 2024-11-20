@@ -16,7 +16,8 @@ export default defineComponent({
       message: '',
       own: true,
       loading: false,
-      response: null
+      response: null,
+      sender: ''
     }
   },
 
@@ -29,26 +30,26 @@ export default defineComponent({
       this.$router.push('/home')
     },
 
-    async handleSubmit(e) {
+    async handleSubmit(e: KeyboardEvent) {
       if (e.key === 'Enter') {
         const connectionId = this.recipientId
 
         const payload = {
           sender: {
-            userId: this.user.userId,
-            firstName: this.user.firstName,
-            lastName: this.user.lastName
+            userId: this.user?.userId,
+            firstName: this.user?.firstName,
+            lastName: this.user?.lastName
           },
           prompt: this.promptMessage,
-          message: e.target.value
+          message: (e.target as HTMLInputElement).value
         }
         const res = await fetchData(
-          `${this.user.userId}/${connectionId}/new-message`,
+          `${this.user?.userId}/${connectionId}/new-message`,
           'POST',
           payload
         )
 
-        if (res.ok) {
+        if (res?.ok) {
           const data = await res?.json()
           this.message = data.message
           const userStore = useUserStore()
@@ -61,7 +62,7 @@ export default defineComponent({
       try {
         this.loading = true
         const res = await fetchData(
-          `${this.user.userId}/${this.recipientId}/fetchDailyPromptMessageId`,
+          `${this.user?.userId}/${this.recipientId}/fetchDailyPromptMessageId`,
           'GET'
         )
         const data = await res?.json()
@@ -72,24 +73,24 @@ export default defineComponent({
           this.loading = false
 
           const resMessage = await fetchData(
-            `${this.user.userId}/fetchMessages/${this.dailyPromptMessageId}`,
+            `${this.user?.userId}/fetchMessages/${this.dailyPromptMessageId}`,
             'GET'
           )
           const dataMessage = await resMessage?.json()
-
           if (resMessage?.ok) {
             this.promptMessage = dataMessage.message.prompt
             this.message = dataMessage.message.message
-            this.own = dataMessage.message.sender[0] === this.userId
-            this.sender = dataMessage.message.sender[1] + ' ' + dataMessage.message.sender[2]
+            this.own = dataMessage.message.sender.userId === this.user?.userId
+            this.sender =
+              dataMessage.message.sender.firstName + ' ' + dataMessage.message.sender.lastName
             this.response = dataMessage.message.responses[0].message
             return
           }
         }
         this.loading = false
-        this.promptMessage = this.$route.query.message
-        this.recipient = this.$route.query.recipient
-        this.recipientId = this.$route.query.recipientId
+        this.promptMessage = (this.$route.query.message as string) || ''
+        this.recipient = (this.$route.query.recipient as string) || ''
+        this.recipientId = (this.$route.query.recipientId as string) || ''
       } catch (err) {
         console.log(err)
       }

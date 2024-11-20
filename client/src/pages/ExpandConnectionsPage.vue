@@ -57,7 +57,7 @@ export default defineComponent({
         }
 
         try {
-          const res = await fetchData(`${this.user.userId}/search?query=${searchValue}`, 'GET', '')
+          const res = await fetchData(`${this.user?.userId}/search?query=${searchValue}`, 'GET', '')
           const data = await res?.json()
 
           if (data.message) {

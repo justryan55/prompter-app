@@ -33,11 +33,15 @@ export default defineComponent({
       if (e.key === 'Enter') {
         try {
           const payload = {
-            sender: { userId: this.userId, firstName: this.firstName, lastName: this.lastName },
+            sender: {
+              userId: this.user?.userId,
+              firstName: this.user?.firstName,
+              lastName: this.user?.lastName
+            },
             message: e.target.value
           }
           const res = await fetchData(
-            `${this.user.userId}/messages/${this.messageId}/add-response`,
+            `${this.user?.userId}/messages/${this.messageId}/add-response`,
             'POST',
             payload
           )
@@ -56,7 +60,7 @@ export default defineComponent({
 
     async fetchMessage() {
       try {
-        const res = await fetchData(`${this.user.userId}/fetchMessages/${this.messageId}`, 'GET')
+        const res = await fetchData(`${this.user?.userId}/fetchMessages/${this.messageId}`, 'GET')
         const data = await res?.json()
         console.log(data.message)
 
@@ -65,7 +69,7 @@ export default defineComponent({
 
           this.message = data.message.message
 
-          this.own = data.message.sender.userId === this.user.userId
+          this.own = data.message.sender.userId === this.user?.userId
 
           this.sender = data.message.sender.firstName + ' ' + data.message.sender.lastName
           this.response = data.message.responses[0].message

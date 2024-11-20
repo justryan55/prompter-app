@@ -29,7 +29,7 @@ export default defineComponent({
   methods: {
     async handleClick() {
       try {
-        const endpoint = `${this.user.userId}/${this.connectionUserId}/toggle-connection`
+        const endpoint = `${this.user?.userId}/${this.connectionUserId}/toggle-connection`
         const res = await fetchData(endpoint, 'POST')
         if (res?.ok) {
           this.connectionStatus = !this.connectionStatus

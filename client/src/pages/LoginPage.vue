@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'Login Page',
+  name: 'Login-Page',
   components: {
     AuthForm
   },
