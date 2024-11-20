@@ -50,7 +50,7 @@ export default defineComponent({
         :prompt="message.prompt"
       />
     </div>
-    <p v-else class="no-messages-text">You do not have any connections in your circle.</p>
+    <p v-else class="no-messages-text">You do not have any messages.</p>
     <NavigationBar />
   </div>
 </template>
