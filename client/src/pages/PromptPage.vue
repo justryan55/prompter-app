@@ -15,7 +15,8 @@ export default defineComponent({
       recipientId: '',
       message: '',
       own: true,
-      loading: false
+      loading: false,
+      response: null
     }
   },
 
@@ -65,7 +66,6 @@ export default defineComponent({
         )
         const data = await res?.json()
         const userStore = useUserStore()
-        console.log(data.message)
         userStore.setDailyPromptMessageId(data.message.explicitId)
 
         if (res?.ok) {
