@@ -43,8 +43,7 @@ router.post('/:userId/:connectionId/new-message', async (req, res) => {
 
     if (diff > 1) {
       user.streakCount = 1
-    }
-    if (diff === 0 || diff === 1) {
+    } else if (diff === 1) {
       user.streakCount += 1
     }
 
