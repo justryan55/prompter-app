@@ -34,7 +34,9 @@ export default defineComponent({
   <div class="layout">
     <div class="fixed">
       <div class="header-container">
-        <p class="header">{{ user?.firstName }}'s Circle</p>
+        <!-- <p class="header">{{ user?.firstName }}'s Circle</p> -->
+        <p class="header">Your Circle</p>
+
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="ionicon"

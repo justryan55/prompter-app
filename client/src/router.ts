@@ -10,6 +10,7 @@ import ExpandConnectionsPage from './pages/ExpandConnectionsPage.vue'
 import PromptPage from './pages/PromptPage.vue'
 import MessageListPage from './pages/MessageListPage.vue'
 import MessagePage from './pages/MessagePage.vue'
+import ProfilePage from './pages/ProfilePage.vue'
 
 const routes = [
   {
@@ -67,6 +68,12 @@ const routes = [
     path: '/my-circle/add-friend',
     name: 'Expand Connections Page ',
     component: ExpandConnectionsPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: ProfilePage,
     meta: { requiresAuth: true }
   }
 ]
