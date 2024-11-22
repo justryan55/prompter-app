@@ -23,8 +23,7 @@ export default defineComponent({
   props: {
     messageId: String,
     senderId: String,
-    senderFirstName: String,
-    senderLastName: String,
+    senderName: String,
     prompt: String
   },
 
@@ -77,7 +76,7 @@ export default defineComponent({
     @mouseleave="endHold"
   >
     <div class="message-details">
-      <p class="sender">{{ senderFirstName }} {{ senderLastName }}</p>
+      <p class="sender">{{ senderName }}</p>
       <p class="prompt">{{ prompt }}</p>
       <p v-if="isHeld" @click.stop="deleteItem" class="delete-btn">Delete</p>
     </div>

@@ -17,7 +17,8 @@ export default defineComponent({
       own: true,
       loading: false,
       response: null,
-      sender: ''
+      sender: '',
+      receiver: ''
     }
   },
 
@@ -40,6 +41,7 @@ export default defineComponent({
             firstName: this.user?.firstName,
             lastName: this.user?.lastName
           },
+          receiver: this.recipient,
           prompt: this.promptMessage,
           message: (e.target as HTMLInputElement).value
         }
@@ -77,6 +79,7 @@ export default defineComponent({
             'GET'
           )
           const dataMessage = await resMessage?.json()
+          console.log(dataMessage)
           if (resMessage?.ok) {
             this.promptMessage = dataMessage.message.prompt
             this.message = dataMessage.message.message
@@ -84,6 +87,7 @@ export default defineComponent({
             this.sender =
               dataMessage.message.sender.firstName + ' ' + dataMessage.message.sender.lastName
             this.response = dataMessage.message.responses[0].message
+            this.receiver = dataMessage.message.receiver
             return
           }
         }

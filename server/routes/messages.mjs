@@ -19,6 +19,7 @@ router.post('/:userId/:connectionId/new-message', async (req, res) => {
         firstName: payload.sender.firstName,
         lastName: payload.sender.lastName
       },
+      receiver: payload.receiver,
       prompt: payload.prompt,
       message: payload.message,
       responses: [],

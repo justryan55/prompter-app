@@ -8,6 +8,7 @@ const messageSchema = new Schema(
       firstName: { type: String },
       lastName: { type: String }
     },
+    receiver: { type: String },
     prompt: { type: String },
     message: { type: Object },
     responses: [{ type: Object }],
