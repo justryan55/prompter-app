@@ -57,10 +57,10 @@ export default defineComponent({
           </svg>
         </div>
         <div class="text">My Connections: {{ user?.myCircle.length }}</div>
-        <textarea>{{ user?.firstName }}</textarea>
-        <textarea>{{ user.lastName }}</textarea>
+        <textarea readonly>{{ user?.firstName }}</textarea>
+        <textarea readonly>{{ user.lastName }}</textarea>
 
-        <textarea>{{ user.email }}</textarea>
+        <textarea readonly>{{ user.email }}</textarea>
         <div
           v-if="this.user.userId !== '6724adf1355c2c432344f5fc'"
           class="delete-btn"
@@ -112,7 +112,7 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 
-textarea {
+textarea:read-only {
   padding: 20px 0px 0px 10px;
   margin: 0px 0px 10px 10px;
   font-family: 'Roboto', sans-serif;
