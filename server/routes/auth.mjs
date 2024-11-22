@@ -86,6 +86,13 @@ router.post('/login', async (req, res) => {
       })
     }
 
+    if (user.isDeleted) {
+      return res.status(403).json({
+        success: false,
+        message: 'This account has been deleted and cannot be used to log in.'
+      })
+    }
+
     const isPasswordCorrect = await bcrypt.compare(password, user.password)
 
     if (!isPasswordCorrect) {

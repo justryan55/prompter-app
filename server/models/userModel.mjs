@@ -33,10 +33,19 @@ const userSchema = new Schema(
     messages: { type: [messageSchema], default: [] },
     lastPromptId: { type: mongoose.Schema.Types.ObjectId, ref: 'Prompt', default: null },
     lastRecipientId: { type: String, default: null },
-    lastPromptSentAt: { type: Date, default: null }
+    lastPromptSentAt: { type: Date, default: null },
+    isDeleted: {
+      type: Boolean,
+      default: false
+    },
+    deletedAt: {
+      type: Date
+    }
   },
   { timestamps: true }
 )
+
+userSchema.index({ email: 1, isDeleted: 1 }, { unique: true })
 
 const userModel = mongoose.model('User', userSchema)
 

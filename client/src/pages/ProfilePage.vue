@@ -1,9 +1,11 @@
 <script lang="ts">
 import NavigationBar from '@/components/NavigationBar.vue'
+import { fetchData } from '@/services/helpers'
 import { useUserStore } from '@/stores/user'
 import { mapState } from 'pinia'
 
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'ProfilePage',
@@ -11,6 +13,18 @@ export default defineComponent({
 
   computed: {
     ...mapState(useUserStore, ['user'])
+  },
+
+  methods: {
+    async handleClick() {
+      const router = useRouter()
+
+      const res = await fetchData(`${this.user?.userId}/deleteAccount`, 'DELETE')
+
+      if (res?.ok) {
+        router.push('/')
+      }
+    }
   }
 })
 </script>
@@ -47,7 +61,7 @@ export default defineComponent({
         <textarea>{{ user.lastName }}</textarea>
 
         <textarea>{{ user.email }}</textarea>
-        <div class="delete-btn">Delete</div>
+        <div class="delete-btn" @click="handleClick">Delete</div>
       </div>
     </div>
 
