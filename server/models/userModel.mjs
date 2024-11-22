@@ -34,6 +34,8 @@ const userSchema = new Schema(
     lastPromptId: { type: mongoose.Schema.Types.ObjectId, ref: 'Prompt', default: null },
     lastRecipientId: { type: String, default: null },
     lastPromptSentAt: { type: Date, default: null },
+    streakCount: { type: Number, default: 0 },
+    lastActionDate: { type: Date, default: null },
     isDeleted: {
       type: Boolean,
       default: false

@@ -59,4 +59,21 @@ router.delete(`/:userId/deleteAccount`, async (req, res) => {
   }
 })
 
+router.get(`/:userId/fetchStreak`, async (req, res) => {
+  const { userId } = req.params
+  const user = await userModel.findById(userId)
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'Unable to find user'
+    })
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: user.streakCount
+  })
+})
+
 export default router

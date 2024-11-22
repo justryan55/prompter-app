@@ -35,6 +35,20 @@ router.post('/:userId/:connectionId/new-message', async (req, res) => {
     user.messages.push(sentMessage)
     connection.messages.push(receivingMessage)
 
+    const today = new Date()
+    const lastAction = user.lastActionDate
+
+    const diff = lastAction ? Math.floor((today - new Date(lastAction)) / (1000 * 60 * 60 * 24)) : 0
+
+    if (diff > 1) {
+      user.streakCount = 1
+    }
+    if (diff === 0 || diff === 1) {
+      user.streakCount += 1
+    }
+
+    user.lastActionDate = today
+
     await user.save()
     await connection.save()
 
