@@ -61,7 +61,13 @@ export default defineComponent({
         <textarea>{{ user.lastName }}</textarea>
 
         <textarea>{{ user.email }}</textarea>
-        <div class="delete-btn" @click="handleClick">Delete</div>
+        <div
+          v-if="this.user.userId !== '6724adf1355c2c432344f5fc'"
+          class="delete-btn"
+          @click="handleClick"
+        >
+          Delete
+        </div>
       </div>
     </div>
 
