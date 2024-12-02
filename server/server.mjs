@@ -22,7 +22,6 @@ app.use(
 
 connectDatabase()
 app.use(express.json())
-app.use(cors())
 app.use('/api/auth', auth)
 app.use('/api/', connections)
 app.use('/api', user)
