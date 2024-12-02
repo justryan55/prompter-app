@@ -16,7 +16,7 @@ app.use(bodyParser.json())
 app.use(
   cors({
     origin: 'https://prompter-mauve.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
   })
