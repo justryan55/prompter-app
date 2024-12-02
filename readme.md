@@ -1,4 +1,12 @@
-# Prompter App
+# Prompter
+
+## Technologies Used
+- **Frontend**: HTML, CSS, JavaScript, Vue
+- **Backend**: Node.js, Express 
+- **Database**: MongoDB 
+- **Deployment**: Deployed using Vercel
+
+---
 
 ## First time setup
 
