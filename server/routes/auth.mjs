@@ -103,7 +103,7 @@ router.post('/login', async (req, res) => {
     }
 
     const secretKey = process.env.SECRET_KEY
-    console.log(secretKey)
+
     const payload = {
       userId: user.id,
       firstName: user.firstName,
