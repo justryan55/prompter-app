@@ -11,14 +11,14 @@ import connectDatabase from './config/db.mjs'
 const app = express()
 const port = 3000
 
-// app.use(
-//   cors({
-//     origin: 'https://prompter-mauve.vercel.app',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-//     credentials: true
-//   })
-// )
+app.use(
+  cors({
+    origin: 'https://prompter-git-deployment-ryans-projects-20a8834f.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  })
+)
 
 connectDatabase()
 app.use(express.json())
