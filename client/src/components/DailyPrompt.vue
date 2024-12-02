@@ -9,11 +9,11 @@ export default defineComponent({
 
   data() {
     return {
-      promptMessage: '',
-      recipient: '',
-      recipientId: '',
-      promptId: '',
-      connectionsInMyCircle: true
+      promptMessage: '' as string,
+      recipient: '' as string,
+      recipientId: '' as string,
+      promptId: '' as string,
+      connectionsInMyCircle: true as boolean
     }
   },
 
@@ -60,14 +60,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="this.connectionsInMyCircle" class="sub-header-container">
+  <div v-if="connectionsInMyCircle" class="sub-header-container">
     <p class="sub-header">Daily Prompt</p>
     <div></div>
     <div></div>
     <div></div>
     <div></div>
   </div>
-  <div v-if="this.connectionsInMyCircle" class="message-container" @click="handleClick">
+  <div v-if="connectionsInMyCircle" class="message-container" @click="handleClick">
     <div class="message-details">
       <p class="prompt-label">Prompt</p>
       <p class="sender">{{ recipient }}</p>

@@ -29,16 +29,17 @@ export default defineComponent({
       this.$router.push('/messages')
     },
 
-    async handleSubmit(e) {
+    async handleSubmit(e: KeyboardEvent) {
       if (e.key === 'Enter') {
         try {
+          const target = e.target as HTMLInputElement
           const payload = {
             sender: {
               userId: this.user?.userId,
               firstName: this.user?.firstName,
               lastName: this.user?.lastName
             },
-            message: e.target.value
+            message: target.value
           }
           const res = await fetchData(
             `${this.user?.userId}/messages/${this.messageId}/add-response`,
@@ -114,7 +115,7 @@ export default defineComponent({
       <input
         type="text"
         class="input"
-        :placeholder="`Respond to ${this.sender}`"
+        :placeholder="`Respond to ${sender}`"
         @keydown="handleSubmit"
       />
     </div>

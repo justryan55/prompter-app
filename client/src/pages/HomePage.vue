@@ -16,8 +16,8 @@ export default defineComponent({
 
   data() {
     return {
-      streak: false,
-      streakCounter: null
+      streak: false as boolean,
+      streakCounter: null as number | null
     }
   },
 
@@ -74,7 +74,7 @@ export default defineComponent({
                 stroke-width="32"
               />
             </svg>
-            <p>{{ this.streakCounter }}</p>
+            <p>{{ streakCounter }}</p>
           </div>
         </div>
       </div>

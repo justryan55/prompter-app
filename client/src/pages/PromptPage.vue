@@ -140,7 +140,7 @@ export default defineComponent({
 
     <div v-if="loading" class="input-container"></div>
 
-    <div v-else-if="!this.message && !loading" class="input-container">
+    <div v-else-if="!message && !loading" class="input-container">
       <input
         type="text"
         class="input"

@@ -61,7 +61,7 @@ export default defineComponent({
         <textarea readonly v-bind:value="user?.lastName" />
         <textarea readonly v-bind:value="user?.email" />
         <div
-          v-if="this.user.userId !== '6724adf1355c2c432344f5fc'"
+          v-if="user?.userId !== '6724adf1355c2c432344f5fc'"
           class="delete-btn"
           @click="handleClick"
         >
