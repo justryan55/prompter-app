@@ -39,9 +39,10 @@ export default defineComponent({
           const data = await res?.json()
 
           if (data && data.token) {
-            const { userId, firstName, lastName, email, myCircle } = jwtDecode(data.token)
+            const { userId, firstName, lastName, email, myCircle } = jwtDecode(data.token) as any
             localStorage.setItem('token', data.token)
-            this.userStore.setUser({ userId, firstName, lastName, email, myCircle })
+            this.userStore.setUser({ userId, firstName, lastName, email, messages: [], myCircle })
+
             this.router.push('/home')
           } else {
             this.message = data.message
