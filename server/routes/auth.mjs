@@ -103,7 +103,7 @@ router.post('/login', async (req, res) => {
     }
 
     const secretKey = process.env.SECRET_KEY
-
+    console.log(secretKey)
     const payload = {
       userId: user.id,
       firstName: user.firstName,
@@ -112,7 +112,7 @@ router.post('/login', async (req, res) => {
       myCircle: user.myCircle
     }
 
-    const token = jwt.sign(payload, secretKey, { expiresIn: '1d' })
+    const token = jwt.sign(payload, secretKey, { expiresIn: '1h' })
     res.status(200).json({
       message: 'User is logged in',
       token: token
