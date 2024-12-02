@@ -52,7 +52,7 @@ export default defineComponent({
         :messageId="message.explicitId"
         :senderId="message.sender?.userId || ''"
         :senderName="
-          user.userId === message.sender?.userId
+          user?.userId === message.sender?.userId
             ? message.receiver || 'Unknown'
             : message.sender?.firstName && message.sender?.lastName
               ? `${message.sender.firstName} ${message.sender.lastName}`

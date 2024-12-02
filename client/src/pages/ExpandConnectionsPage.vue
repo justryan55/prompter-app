@@ -46,9 +46,9 @@ export default defineComponent({
       this.$router.push('/my-circle')
     },
 
-    async handleSearch(e) {
+    async handleSearch(e: KeyboardEvent) {
       if (e.key === 'Enter') {
-        const searchValue = e.target.value
+        const searchValue = (e.target as HTMLInputElement).value
         this.searchInitiated = true
 
         if (searchValue === '') {

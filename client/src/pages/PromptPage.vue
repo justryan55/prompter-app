@@ -102,9 +102,9 @@ export default defineComponent({
   },
 
   mounted() {
-    this.promptMessage = this.$route.query.message
-    this.recipient = this.$route.query.recipient
-    this.recipientId = this.$route.query.recipientId
+    this.promptMessage = (this.$route.query.message as string) || ''
+    this.recipient = (this.$route.query.recipient as string) || ''
+    this.recipientId = (this.$route.query.recipientId as string) || ''
     this.fetchMessage()
   }
 })

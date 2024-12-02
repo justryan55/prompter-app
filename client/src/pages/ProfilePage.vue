@@ -57,10 +57,9 @@ export default defineComponent({
           </svg>
         </div>
         <div class="text">My Connections: {{ user?.myCircle.length }}</div>
-        <textarea readonly>{{ user?.firstName }}</textarea>
-        <textarea readonly>{{ user.lastName }}</textarea>
-
-        <textarea readonly>{{ user.email }}</textarea>
+        <textarea readonly v-bind:value="user?.firstName" />
+        <textarea readonly v-bind:value="user?.lastName" />
+        <textarea readonly v-bind:value="user?.email" />
         <div
           v-if="this.user.userId !== '6724adf1355c2c432344f5fc'"
           class="delete-btn"

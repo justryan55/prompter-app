@@ -11,7 +11,7 @@ export default defineComponent({
     return {
       isHeld: false,
       holdTime: 1000,
-      timer: null,
+      timer: null as ReturnType<typeof setTimeout> | null,
       preventClick: false
     }
   },
@@ -46,7 +46,9 @@ export default defineComponent({
       if (this.isHeld) {
         return
       }
-      clearTimeout(this.timer)
+      if (this.timer !== null) {
+        clearTimeout(this.timer)
+      }
     },
     async deleteItem() {
       try {

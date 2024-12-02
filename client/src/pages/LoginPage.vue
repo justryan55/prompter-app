@@ -12,7 +12,7 @@ export default defineComponent({
   },
 
   methods: {
-    async handleGuestClick(e) {
+    async handleGuestClick(e: MouseEvent) {
       e.preventDefault()
 
       const guestFormData = {
@@ -28,10 +28,10 @@ export default defineComponent({
         const data = await res?.json()
 
         if (data.token) {
-          const { userId, firstName, lastName, email, myCircle } = jwtDecode(data.token)
+          const { userId, firstName, lastName, email, myCircle } = jwtDecode(data.token) as any
           window.localStorage.setItem('token', data.token)
           const userStore = useUserStore()
-          userStore.setUser({ userId, firstName, lastName, email, myCircle })
+          userStore.setUser({ userId, firstName, lastName, email, myCircle, messages: [] })
 
           this.$router.push('/home')
         } else {
